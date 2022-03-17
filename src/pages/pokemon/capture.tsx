@@ -9,8 +9,8 @@ import { WildPokemon } from "components/WildPokemon";
 import type { Status } from "types";
 import Head from "next/head";
 
-const pokeBallInitial = { x: "10vh", y: "calc(110vh - 3rem)", scale: 1 };
-const pokeBallReady = { x: "10vh", y: "calc(80vh - 3rem)", scale: 1 };
+const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 };
+const pokeBallReady = { x: 0, y: "calc(80vh - 3rem)", scale: 1 };
 
 const Capture: NextPage = () => {
   const controls = useAnimation();
@@ -42,14 +42,14 @@ const Capture: NextPage = () => {
     const image = imageRef.current.getBoundingClientRect();
     const { width, height } = ballRef.current.getBoundingClientRect();
 
-    const dx = imageRef.current.width / 2 + width / 2;
+    const dx = imageRef.current.width / 2 + width / 2 + 16;
 
     const dy = image.top + imageRef.current.height / 2 - height / 2 - 3 * 16;
 
     try {
       await Promise.all([
         controls.start({
-          x: `calc(90vw - ${dx}px)`,
+          x: `calc(80vw - ${dx}px)`,
           transition: { duration: 0.75 },
         }),
         controls.start({
@@ -77,15 +77,15 @@ const Capture: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Capture</title>
+        <title>Capture | Poke Adventure</title>
       </Head>
 
       <div
         style={{
-          height: "100%",
-          width: "100vw",
+          minHeight: "100%",
+          width: "100%",
           position: "relative",
-          overflow: "hidden",
+          overflowX: "hidden",
         }}
       >
         <div style={{ position: "absolute" }}>

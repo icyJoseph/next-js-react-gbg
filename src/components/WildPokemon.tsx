@@ -14,7 +14,7 @@ type PokeCallbacks = { onFailure: () => void; onCapture: () => void };
 
 const pokemonInitial = { x: "110vw", y: "calc(10vh - 3rem)" };
 const pokemonReady = {
-  x: "calc(90vw - 240px)",
+  x: "calc(80vw - 240px - 16px)",
   y: "calc(10vh - 3rem)",
   opacity: 1,
 };

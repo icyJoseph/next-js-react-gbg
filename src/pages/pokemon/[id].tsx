@@ -21,7 +21,7 @@ export const PokeView = ({ pokemon }: PokeViewProps) => {
   return (
     <>
       <Head>
-        <title>{pokemon.name}</title>
+        <title>{pokemon.name} | Poke Adventure</title>
       </Head>
 
       <div className="max-width-wrapper pokecard-container">

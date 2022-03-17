@@ -39,6 +39,18 @@ body,
   flex: 1 1 auto;
 }
 
+.content {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.content > section {
+  margin-bottom: 3rem;
+}
+
 .max-width-wrapper {
   max-width: 350px;
   margin-left: auto;
@@ -109,8 +121,9 @@ main {
 }
 
 .navbar {
-  width: 100%;
+  width: 80%;
   padding: 1rem;
+  margin: 0 auto;
 }
 
 .navbar ul {
@@ -119,7 +132,10 @@ main {
   justify-content: space-evenly;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap;
 }
 
 .navbar li {
+  flex: 1;
+  text-align: center;
 }
