@@ -13,11 +13,13 @@ export const Pokemon = object({
   description: string(),
 });
 
-export type Pokemon = Infer<typeof Pokemon>;
-
-export type Message = { message: string };
-
 export const Catch = object({
   id: number(),
   success: boolean(),
 });
+
+export type Pokemon = Infer<typeof Pokemon>;
+
+export type Message = { message: string };
+
+export type Status = "pending" | "trying" | "captured";

@@ -3,8 +3,8 @@ import crypto from "crypto";
 
 import { Pokemon } from "types";
 
-const specieEP = "https://pokeapi.co/api/v2/pokemon-species";
-const pokeEp = "https://pokeapi.co/api/v2/pokemon";
+export const specieEP = "https://pokeapi.co/api/v2/pokemon-species";
+export const pokeEp = "https://pokeapi.co/api/v2/pokemon";
 
 export const catchPokemon = async (id: number | string) => {
   const specie = await fetch(`${specieEP}/${id}`);
