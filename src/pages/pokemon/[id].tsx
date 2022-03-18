@@ -6,8 +6,7 @@ import type {
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import NextImage from "next/image";
-
+import { PokeCard } from "components/PokeCard";
 import { fetchPokemon } from "lib/pokemon";
 import { Pokemon } from "types";
 
@@ -24,34 +23,7 @@ export const PokeView = ({ pokemon }: PokeViewProps) => {
         <title>{pokemon.name} | Poke Adventure</title>
       </Head>
 
-      <div className="max-width-wrapper pokecard-container">
-        <section className="nes-container with-title pokecard">
-          <header className="title">
-            <h1>{pokemon.name}</h1>
-
-            <p>#{pokemon.id}</p>
-          </header>
-
-          <NextImage
-            className="pokemon-img"
-            src={pokemon.sprites.frontDefault}
-            width="240"
-            height="240"
-            alt={pokemon.name}
-          />
-
-          <div>
-            <pre>
-              {(pokemon.height * 0.1).toFixed(2)} m -{" "}
-              {(pokemon.weight * 0.1).toFixed(2)} kg
-            </pre>
-          </div>
-
-          <div>
-            <pre>{pokemon.description}</pre>
-          </div>
-        </section>
-      </div>
+      <PokeCard pokemon={pokemon} />
     </>
   );
 };

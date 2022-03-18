@@ -1,16 +1,42 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
 import type { NextPage } from "next";
-import { motion, useAnimation } from "framer-motion";
+import Head from "next/head";
+import { useAnimation, type AnimationControls } from "framer-motion";
 
+import { Scene } from "components/CaptureScene";
 import { PokeBall } from "components/PokeBall";
 import { WildPokemon } from "components/WildPokemon";
-
 import type { Status } from "types";
-import Head from "next/head";
 
 const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 };
 const pokeBallReady = { x: 0, y: "calc(80vh - 3rem)", scale: 1 };
+
+const animatePokeBall = (
+  controls: AnimationControls,
+  { dx, dy }: { dx: number; dy: number }
+) => {
+  return Promise.all([
+    controls.start({
+      x: `calc(80vw - ${dx}px)`,
+      transition: { duration: 0.75 },
+    }),
+    controls.start({
+      y: dy,
+      transition: {
+        duration: 0.75,
+        type: "spring",
+        stiffness: 80,
+        damping: 10,
+        mass: 1,
+      },
+    }),
+    controls.start({
+      scale: 0.7,
+      transition: { duration: 0.75 },
+    }),
+  ]);
+};
 
 const Capture: NextPage = () => {
   const controls = useAnimation();
@@ -21,12 +47,7 @@ const Capture: NextPage = () => {
   const [status, setStatus] = useState<Status>("pending");
 
   const onCapture = useCallback(() => setStatus("captured"), []);
-
-  const onFailure = useCallback(() => {
-    setStatus("pending");
-
-    controls.set(pokeBallReady);
-  }, [controls]);
+  const onFailure = useCallback(() => setStatus("pending"), []);
 
   useEffect(() => {
     if (status !== "pending") return;
@@ -39,34 +60,16 @@ const Capture: NextPage = () => {
     if (!imageRef.current) return;
     if (!ballRef.current) return;
 
-    const image = imageRef.current.getBoundingClientRect();
-    const { width, height } = ballRef.current.getBoundingClientRect();
+    const pokemon = imageRef.current.getBoundingClientRect();
+    const ball = ballRef.current.getBoundingClientRect();
 
-    const dx = imageRef.current.width / 2 + width / 2 + 16;
-
-    const dy = image.top + imageRef.current.height / 2 - height / 2 - 3 * 16;
+    // TODO: Document Magic Numbers
+    const dx = imageRef.current.width / 2 + ball.width / 2 + 16;
+    const dy =
+      pokemon.top + imageRef.current.height / 2 - ball.height / 2 - 3 * 16;
 
     try {
-      await Promise.all([
-        controls.start({
-          x: `calc(80vw - ${dx}px)`,
-          transition: { duration: 0.75 },
-        }),
-        controls.start({
-          y: dy,
-          transition: {
-            duration: 0.75,
-            type: "spring",
-            stiffness: 80,
-            damping: 10,
-            mass: 1,
-          },
-        }),
-        controls.start({
-          scale: 0.7,
-          transition: { duration: 0.75 },
-        }),
-      ]);
+      await animatePokeBall(controls, { dx, dy });
 
       setStatus("trying");
     } catch (e) {
@@ -80,38 +83,27 @@ const Capture: NextPage = () => {
         <title>Capture | Poke Adventure</title>
       </Head>
 
-      <div
-        style={{
-          minHeight: "100%",
-          width: "100%",
-          position: "relative",
-          overflowX: "hidden",
-        }}
-      >
+      <Scene>
+        {/* TODO Remove */}
         <div style={{ position: "absolute" }}>
           <span>{status}</span>
         </div>
 
         <WildPokemon
           status={status}
-          ref={imageRef}
           onCapture={onCapture}
           onFailure={onFailure}
+          ref={imageRef}
         />
 
-        <motion.button
-          className="btn-pokeball"
+        <PokeBall
           animate={controls}
           initial={pokeBallInitial}
-          style={{
-            position: "absolute",
-          }}
-          ref={ballRef}
+          status={status}
           onClick={handleClick}
-        >
-          <PokeBall status={status} />
-        </motion.button>
-      </div>
+          ref={ballRef}
+        />
+      </Scene>
     </>
   );
 };

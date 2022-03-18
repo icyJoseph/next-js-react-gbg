@@ -1,20 +1,25 @@
 import "nes.css/css/nes.min.css";
-import "styles/globals.css";
 import type { AppProps } from "next/app";
-import { Navigation } from "components/Navigation";
 
-function MyApp({ Component, pageProps }: AppProps) {
+import { AppHeader } from "components/AppHeader";
+import { AppContent } from "components/AppContent";
+import { Navigation } from "components/Navigation";
+import { GlobalStyle } from "styles/global";
+
+function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <header className="header">
-        <Navigation />
-      </header>
+      <GlobalStyle />
 
-      <main className="content">
+      <AppHeader>
+        <Navigation />
+      </AppHeader>
+
+      <AppContent>
         <Component {...pageProps} />
-      </main>
+      </AppContent>
     </>
   );
 }
 
-export default MyApp;
+export default CustomApp;

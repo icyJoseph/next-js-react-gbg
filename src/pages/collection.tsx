@@ -1,11 +1,22 @@
+import { useMemo, useState } from "react";
+
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
 import { PokeArticle } from "components/PokeArticle";
+import { CollectionGrid } from "components/CollectionGrid";
 import { USER_TOKEN, verifyUserCookie } from "lib/cookie";
-import { useState } from "react";
 
 const ITEMS_PER_PAGE = 8;
+
+const getAriaProps = ({ page, index }: { page: number; index: number }) =>
+  ({
+    "aria-label":
+      page === index
+        ? `Current Page, Page ${index + 1}`
+        : `Go to Page ${index + 1}`,
+    "aria-current": page === index ? "true" : "false",
+  } as const);
 
 export const PokeCollection = ({
   collection,
@@ -13,6 +24,14 @@ export const PokeCollection = ({
   const totalPages = Math.ceil(collection.length / ITEMS_PER_PAGE);
 
   const [page, setPage] = useState(0);
+
+  const btnIndexes = useMemo(
+    () =>
+      Array.from({ length: totalPages }, (_, index) => ({
+        index,
+      })),
+    [totalPages]
+  );
 
   return (
     <>
@@ -24,30 +43,18 @@ export const PokeCollection = ({
         <h1>My Collection</h1>
 
         <nav role="navigation" aria-label="Collection Navigation">
-          {Array.from({ length: totalPages }, (_, i) => (
+          {btnIndexes.map(({ index }) => (
             <button
-              key={i}
-              onClick={() => setPage(i)}
-              aria-label={
-                page === i
-                  ? `Current Page, Page ${i + 1}`
-                  : `Go to Page ${i + 1}`
-              }
-              aria-current={page === i ? "true" : "false"}
+              key={index}
+              onClick={() => setPage(index)}
+              {...getAriaProps({ page, index: index })}
             >
-              {i + 1}
+              {index + 1}
             </button>
           ))}
         </nav>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(16rem, 1fr))",
-            gap: "1rem",
-            margin: "0 auto",
-          }}
-        >
+        <CollectionGrid>
           {collection
             .slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
             .map(({ value, id }) => (
@@ -55,7 +62,7 @@ export const PokeCollection = ({
                 <PokeArticle id={id} value={value} />
               </article>
             ))}
-        </div>
+        </CollectionGrid>
       </section>
     </>
   );

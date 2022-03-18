@@ -1,8 +1,27 @@
+import styled from "styled-components";
 import Link from "next/link";
+
+const StyledNav = styled.nav`
+  padding: 1rem;
+
+  & > ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-evenly;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  & > li {
+    flex: 1;
+    text-align: center;
+  }
+`;
 
 export const Navigation = () => {
   return (
-    <nav className="navbar">
+    <StyledNav>
       <ul>
         <li>
           <Link href="/">
@@ -20,6 +39,6 @@ export const Navigation = () => {
           </Link>
         </li>
       </ul>
-    </nav>
+    </StyledNav>
   );
 };
