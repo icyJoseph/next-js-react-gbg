@@ -1,13 +1,7 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { jwtVerify } from "jose";
-import {
-  createUserCookie,
-  JWT_SECRET_KEY,
-  USER_TOKEN,
-  verifyUserCookie,
-} from "lib/cookie";
-import { catchPokemon } from "lib/pokemon";
 import type { NextApiRequest, NextApiResponse } from "next";
+
+import { createUserCookie, USER_TOKEN, verifyUserCookie } from "lib/cookie";
+import { catchPokemon } from "lib/pokemon";
 
 export async function capture(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST")
@@ -32,7 +26,7 @@ export async function capture(req: NextApiRequest, res: NextApiResponse) {
     const current = pokemonDb.at(id);
     const value = current === "x" ? 0 : Number(current);
 
-    const update = success ? value + 1 : value;
+    const update = success ? Math.min(9, value + 1) : value;
 
     const start = pokemonDb.substring(0, id);
     const end = pokemonDb.substring(id + 1);
