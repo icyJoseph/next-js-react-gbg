@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import type { Pokemon, Message } from "types";
 import { fetchPokemon } from "lib/pokemon";
+import type { Pokemon, Message } from "types";
 
 export async function wildPokemon(
   _req: NextApiRequest,

@@ -1,7 +1,7 @@
 import { useEffect, forwardRef } from "react";
 
-import styled from "styled-components";
 import { motion, useAnimation } from "framer-motion";
+import styled from "styled-components";
 import { assert } from "superstruct";
 
 import { useWildPokemon } from "hooks/useWildPokemon";

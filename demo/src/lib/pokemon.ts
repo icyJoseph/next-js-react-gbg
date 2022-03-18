@@ -1,5 +1,6 @@
-import { assert } from "superstruct";
 import crypto from "crypto";
+
+import { assert } from "superstruct";
 
 import { Pokemon } from "types";
 

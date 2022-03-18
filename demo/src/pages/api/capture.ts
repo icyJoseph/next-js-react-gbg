@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { createUserToken, USER_TOKEN, verifyUserToken } from "lib/token";
 import { catchPokemon } from "lib/pokemon";
+import { createUserToken, USER_TOKEN, verifyUserToken } from "lib/token";
 
 export async function capture(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST")

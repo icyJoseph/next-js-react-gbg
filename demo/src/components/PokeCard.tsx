@@ -1,5 +1,6 @@
 import NextImage from "next/image";
 import styled from "styled-components";
+
 import type { Poke } from "hooks/usePokemon";
 
 type PokeCardProps = {

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 
+import { useAnimation, type AnimationControls } from "framer-motion";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useAnimation, type AnimationControls } from "framer-motion";
 
 import { Scene } from "components/CaptureScene";
 import { PokeBall } from "components/PokeBall";

@@ -3,8 +3,8 @@ import { useMemo, useState } from "react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
-import { PokeArticle } from "components/PokeArticle";
 import { CollectionGrid } from "components/CollectionGrid";
+import { PokeArticle } from "components/PokeArticle";
 import { USER_TOKEN, verifyUserToken } from "lib/token";
 
 const ITEMS_PER_PAGE = 8;

@@ -1,7 +1,7 @@
 import { type ComponentPropsWithRef, forwardRef } from "react";
 
-import styled, { keyframes } from "styled-components";
 import { motion, type AnimationControls } from "framer-motion";
+import styled, { keyframes } from "styled-components";
 
 import type { Status } from "types";
 

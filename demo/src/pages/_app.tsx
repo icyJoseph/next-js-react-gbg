@@ -1,8 +1,8 @@
 import "nes.css/css/nes.min.css";
 import type { AppProps } from "next/app";
 
-import { AppHeader } from "components/AppHeader";
 import { AppContent } from "components/AppContent";
+import { AppHeader } from "components/AppHeader";
 import { Navigation } from "components/Navigation";
 import { GlobalStyle } from "styles/global";
 

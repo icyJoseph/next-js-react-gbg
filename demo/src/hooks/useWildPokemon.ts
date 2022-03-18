@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { assert } from "superstruct";
+
 import { Pokemon } from "types";
 
 export const useWildPokemon = () => {

@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
 import { SignJWT, jwtVerify } from "jose";
+import { nanoid } from "nanoid";
 import { assert, string, number, object } from "superstruct";
 
 export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
