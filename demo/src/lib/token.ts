@@ -11,22 +11,11 @@ const UserJwtPayload = object({
   iat: number(),
 });
 
-function createJsonResponse(status: number, data: any, init?: ResponseInit) {
-  return new Response(JSON.stringify(data), {
-    ...init,
-    status,
-    headers: {
-      ...init?.headers,
-      "Content-Type": "application/json",
-    },
-  });
-}
-
 /**
  * Verifies the user's JWT token and returns the payload if
  * it's valid or a response if it's not.
  */
-export async function verifyUserCookie(token: string | undefined) {
+export async function verifyUserToken(token: string | undefined) {
   if (!token) {
     return { status: 401, message: "Missing user token" };
   }
@@ -47,7 +36,7 @@ export async function verifyUserCookie(token: string | undefined) {
 
 const initial = () => `\$${Array.from({ length: 251 }, () => "x").join("")}`;
 
-export const createUserCookie = (pokemonDb?: string, jti?: string) =>
+export const createUserToken = (pokemonDb?: string, jti?: string) =>
   new SignJWT({
     pokemonDb: pokemonDb || initial(),
   })
@@ -57,7 +46,7 @@ export const createUserCookie = (pokemonDb?: string, jti?: string) =>
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
 
 type GuardCookieProps<OnGuarded = unknown, OnPass = unknown> = {
-  cookie: string | undefined;
+  token: string | undefined;
   onGuarded: (token: string) => OnGuarded;
   onPassThrough: () => OnPass;
 };
@@ -65,23 +54,23 @@ type GuardCookieProps<OnGuarded = unknown, OnPass = unknown> = {
 /**
  * Adds the user token cookie to a response.
  */
-export async function guardUserCookie<OnGuarded = unknown, OnPass = unknown>({
-  cookie,
+export async function guardUserToken<OnGuarded = unknown, OnPass = unknown>({
+  token,
   onPassThrough,
   onGuarded,
 }: GuardCookieProps<OnGuarded, OnPass>) {
-  if (!cookie) {
-    const token = await createUserCookie();
-    return onGuarded(token);
+  if (!token) {
+    const newToken = await createUserToken();
+    return onGuarded(newToken);
   }
 
   try {
-    await jwtVerify(cookie, new TextEncoder().encode(JWT_SECRET_KEY));
+    await jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY));
 
     return onPassThrough();
   } catch (e) {
     // dirty cookie
-    const token = await createUserCookie();
+    const token = await createUserToken();
     return onGuarded(token);
   }
 }

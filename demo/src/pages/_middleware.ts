@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { guardUserCookie, USER_TOKEN } from "lib/cookie";
+import { guardUserToken, USER_TOKEN } from "lib/token";
 
 const shouldExclude = (pathname: string) => {
   return (
@@ -17,8 +17,8 @@ export async function middleware(req: NextRequest) {
   if (shouldExclude(pathname)) return NextResponse.next();
 
   try {
-    const result = await guardUserCookie({
-      cookie: req.cookies[USER_TOKEN],
+    const result = await guardUserToken({
+      token: req.cookies[USER_TOKEN],
       onGuarded: (token) => {
         const response = NextResponse.next();
 

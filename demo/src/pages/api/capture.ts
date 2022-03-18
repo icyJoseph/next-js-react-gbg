@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { createUserCookie, USER_TOKEN, verifyUserCookie } from "lib/cookie";
+import { createUserToken, USER_TOKEN, verifyUserToken } from "lib/token";
 import { catchPokemon } from "lib/pokemon";
 
 export async function capture(req: NextApiRequest, res: NextApiResponse) {
@@ -14,7 +14,7 @@ export async function capture(req: NextApiRequest, res: NextApiResponse) {
 
   const token = req.cookies[USER_TOKEN];
 
-  const result = await verifyUserCookie(token);
+  const result = await verifyUserToken(token);
 
   if ("status" in result)
     return res.status(result.status).json({ message: result.message });
@@ -30,16 +30,11 @@ export async function capture(req: NextApiRequest, res: NextApiResponse) {
 
     const start = pokemonDb.substring(0, id);
     const end = pokemonDb.substring(id + 1);
-
     const updatedDb = `${start}${update}${end}`;
 
-    const newCookie = await createUserCookie(updatedDb, result.jti);
+    const newCookie = await createUserToken(updatedDb, result.jti);
 
-    // TODO: Use cookie setting package
-    res.setHeader(
-      "set-cookie",
-      `${USER_TOKEN}=${newCookie}; Path=/ ; HttpOnly`
-    );
+    res.setHeader("set-cookie", `${USER_TOKEN}=${newCookie}; Path=/; HttpOnly`);
 
     return res.status(200).json({ id, success });
   } catch (e) {

@@ -5,7 +5,7 @@ import Head from "next/head";
 
 import { PokeArticle } from "components/PokeArticle";
 import { CollectionGrid } from "components/CollectionGrid";
-import { USER_TOKEN, verifyUserCookie } from "lib/cookie";
+import { USER_TOKEN, verifyUserToken } from "lib/token";
 
 const ITEMS_PER_PAGE = 8;
 
@@ -73,9 +73,11 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   const token = ctx.req.cookies[USER_TOKEN];
 
-  const data = await verifyUserCookie(token);
+  const data = await verifyUserToken(token);
 
-  if ("status" in data) return { notFound: true }; // or redirect back to '/'
+  // if ("status" in data)
+  //   return { redirect: { destination: "/", permanent: false } };
+  if ("status" in data) return { notFound: true };
 
   const collection = data.pokemonDb
     .split("")
