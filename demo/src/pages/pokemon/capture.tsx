@@ -1,13 +1,18 @@
+import "@reach/dialog/styles.css";
 import { useEffect, useRef, useState, useCallback } from "react";
 
+import Dialog from "@reach/dialog";
 import { useAnimation, type AnimationControls } from "framer-motion";
 import type { NextPage } from "next";
 import Head from "next/head";
+import NextImage from "next/image";
+import Link from "next/link";
 
+import { ButtonGroup } from "components/ButtonGroup";
 import { Scene } from "components/CaptureScene";
 import { PokeBall } from "components/PokeBall";
 import { WildPokemon } from "components/WildPokemon";
-import type { Status } from "types";
+import type { Pokemon, Status } from "types";
 
 const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 };
 const pokeBallReady = { x: 0, y: "calc(80vh - 3rem)", scale: 1 };
@@ -45,9 +50,20 @@ const Capture: NextPage = () => {
   const ballRef = useRef<HTMLButtonElement>(null);
 
   const [status, setStatus] = useState<Status>("pending");
+  const [captured, setCaptured] = useState<Pokemon | null>(null);
 
-  const onCapture = useCallback(() => setStatus("captured"), []);
+  const onCapture = useCallback((pk: Pokemon) => {
+    setStatus("captured");
+    setCaptured(pk);
+  }, []);
+
   const onFailure = useCallback(() => setStatus("pending"), []);
+
+  useEffect(() => {
+    if (status !== "captured") {
+      if (captured) setCaptured(null);
+    }
+  }, [status, captured]);
 
   useEffect(() => {
     if (status !== "pending") return;
@@ -76,6 +92,50 @@ const Capture: NextPage = () => {
       onFailure();
     }
   };
+
+  if (status === "captured") {
+    return (
+      <>
+        <Head>
+          <title>🎉🎉🎉 | Poké Adventure</title>
+        </Head>
+
+        <Dialog isOpen aria-label="Success! You captured a Pokémon">
+          <h1 className="nes-text is-success">Nice!</h1>
+
+          <p>
+            You captured a{" "}
+            <span className="nes-text is-primary capitalize">
+              {captured?.name}
+            </span>
+          </p>
+
+          {captured && (
+            <NextImage
+              src={captured.sprites.frontDefault}
+              width="180"
+              height="180"
+              alt={captured.name}
+            />
+          )}
+          <ButtonGroup gap="1rem">
+            <Link href={`/pokemon/${captured?.id}`}>
+              <a className="nes-btn is-primary">
+                <span className="capitalize">{captured?.name}</span>
+              </a>
+            </Link>
+
+            <button
+              className="nes-btn is-error"
+              onClick={() => setStatus("pending")}
+            >
+              Capture more
+            </button>
+          </ButtonGroup>
+        </Dialog>
+      </>
+    );
+  }
 
   return (
     <>
