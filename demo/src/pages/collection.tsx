@@ -37,7 +37,7 @@ export const PokeCollection = ({
   return (
     <>
       <Head>
-        <title>Collection | Poke Adventure</title>
+        <title>Collection | Poké Adventure</title>
       </Head>
 
       <section>
@@ -46,7 +46,7 @@ export const PokeCollection = ({
         <Pagination role="navigation" aria-label="Collection Navigation">
           {btnIndexes.map(({ index }) => (
             <button
-              className="nes-btn"
+              className={`nes-btn ${page === index ? "is-primary" : ""}`.trim()}
               key={index}
               onClick={() => setPage(index)}
               {...getAriaProps({ page, index: index })}

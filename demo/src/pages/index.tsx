@@ -8,37 +8,45 @@ export const Home = () => {
   return (
     <>
       <Head>
-        <title>Home | Poke Adventure</title>
+        <title>Home | Poké Adventure</title>
       </Head>
 
       <section>
-        <h1>Poke Adventure</h1>
+        <h1>Poké Adventure</h1>
 
         <p>
-          Try to capture pokemon in{" "}
+          Try to capture Pokémon in{" "}
           <Link href="/pokemon/capture">
-            <a>/pokemon/capture</a>
+            <a>Capture</a>
           </Link>
           , and view your collection in{" "}
           <Link href="/collection">
-            <a>/collection</a>
+            <a>Collection</a>
           </Link>
           .
         </p>
 
-        <p className="nes-text">
-          For a Pokemon to be registered as seen, you must try to capture it, at
-          least once.
-        </p>
+        <Notice>
+          <div className="nes-balloon from-left">
+            <p className="nes-text is-primary">
+              For a Pokémon to be registered as seen, you must try to capture
+              it, at least once.
+            </p>
+          </div>
+
+          <div>
+            <i className="nes-pokeball"></i>
+          </div>
+        </Notice>
 
         <p className="nes-text">
-          The encounter rate is the same for all Pokemon. The capture rate is
-          taken from the Pokemon API.
+          The encounter rate is the same for all Pokémon. The capture rate is
+          taken from the Pokémon API.
         </p>
 
         <p className="nes-text">
           Only the first{" "}
-          <span className="nes-text is-primary">251 Pokemon</span> are
+          <span className="nes-text is-primary">251 Pokémon</span> are
           supported. You can view information about any of these at{" "}
           <Link href="/pokemon/1">
             <a>/pokemon/[id]</a>
@@ -48,7 +56,7 @@ export const Home = () => {
 
         <Notice>
           <div className="nes-balloon from-left">
-            <p className="nes-text">
+            <p className="nes-text is-primary">
               This site uses a Cookie to save your collection.
             </p>
             <p className="nes-text is-error">Terrible and lazy decision!</p>
@@ -75,48 +83,38 @@ export const Home = () => {
           <a href="#about">#</a> About
         </h2>
 
-        <p>Poke Adventure page. Made to be used as a Next.js demonstration.</p>
+        <p>Poké Adventure was made to be used as a Next.js demonstration.</p>
 
         <p>The application uses 6 routes, 4 pages and 2 API routes.</p>
 
-        <ul className="nes-list">
+        <h3>Pages</h3>
+        <ul className="nes-list is-circle">
           <li>
-            <h3>Pages</h3>
-            <ul className="nes-list is-circle">
-              <li>
-                Landing page:{" "}
-                <Link href="/">
-                  <a>/</a>
-                </Link>
-              </li>
-              <li>
-                Pokemon view:{" "}
-                <Link href="/pokemon/4">
-                  <a>/pokemon/[id]</a>
-                </Link>
-              </li>
-              <li>
-                Pokemon capture:{" "}
-                <Link href="/pokemon/capture">
-                  <a>/pokemon/capture</a>
-                </Link>
-              </li>
-              <li>
-                Personal collection:{" "}
-                <Link href="/collection">
-                  <a>/collection</a>
-                </Link>
-              </li>
-            </ul>
+            <Link href="/">
+              <a>Landing Page</a>
+            </Link>
           </li>
+          <li>
+            <Link href="/pokemon/4">
+              <a>Pokémon view</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/pokemon/capture">
+              <a>Pokémon Capture</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/collection">
+              <a>Personal Collection</a>
+            </Link>
+          </li>
+        </ul>
 
-          <li>
-            <h3>API</h3>
-            <ul className="nes-list is-circle">
-              <li>Wild Pokemon fetch</li>
-              <li>Poke Capture decider</li>
-            </ul>
-          </li>
+        <h3>API</h3>
+        <ul className="nes-list is-circle">
+          <li>Wild Pokémon fetch</li>
+          <li>Poké Capture decider</li>
         </ul>
       </section>
 
@@ -124,33 +122,47 @@ export const Home = () => {
         <h2 id="architecture">
           <a href="#architecture">#</a> Architecture
         </h2>
-
         <h3>At Build time</h3>
-
         <p>
-          At build time the landing page, the capture page, and 3 pokemon views
+          At build time the landing page, the capture page, and 3 Pokémon views
           are generated.
         </p>
-
         <h3>On Demand</h3>
-
         <p>
           The API routes are lambdas, and are generated at runtime, by default.
         </p>
-
         <p>
-          The pokemon collection page, and additional pokemon views are
+          The Pokémon collection page, and additional Pokémon views are
           generated on demand.
         </p>
 
-        <div>
+        <h3>Tech Stack</h3>
+
+        <p>
+          Next.js application, built with{" "}
+          <code className="nes-text is-primary">next build</code> and activated
+          using <code className="nes-text is-primary">next start</code> command.
+        </p>
+
+        <p>
+          The data for Pokémon comes from the{" "}
+          <a
+            href="https://pokeapi.co/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            PokéAPI
+          </a>
+          .
+        </p>
+
+        <figure className="nes-container with-title">
+          <figcaption className="title">Application Data Flow</figcaption>
           <NextImage src="/architecture.png" width="1148" height="851" />
-        </div>
+        </figure>
       </section>
     </>
   );
 };
 
 export default Home;
-
-// landing page

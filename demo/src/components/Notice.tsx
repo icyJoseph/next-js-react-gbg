@@ -12,8 +12,4 @@ export const Notice = styled.div`
     width: 100%;
     max-width: 550px;
   }
-
-  > div > i {
-    margin-left: -1rem;
-  }
 `;

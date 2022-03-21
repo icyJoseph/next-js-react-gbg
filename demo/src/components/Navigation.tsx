@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 const StyledNav = styled.nav`
@@ -30,23 +31,32 @@ const StyledNav = styled.nav`
   }
 `;
 
+const getAnchorClassName = (isActive: boolean) =>
+  `nes-text ${isActive ? "is-success" : ""}`.trim();
+
 export const Navigation = () => {
+  const { pathname } = useRouter();
+
   return (
     <StyledNav>
       <ul>
         <li>
           <Link href="/">
-            <a>Home</a>
+            <a className={getAnchorClassName(pathname === "/")}>Home</a>
           </Link>
         </li>
         <li>
           <Link href="/pokemon/capture">
-            <a>Capture</a>
+            <a className={getAnchorClassName(pathname === "/pokemon/capture")}>
+              Capture
+            </a>
           </Link>
         </li>
         <li>
           <Link href="/collection">
-            <a>Collection</a>
+            <a className={getAnchorClassName(pathname === "/collection")}>
+              Collection
+            </a>
           </Link>
         </li>
       </ul>

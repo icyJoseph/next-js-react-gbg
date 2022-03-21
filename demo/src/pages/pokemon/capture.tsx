@@ -80,7 +80,7 @@ const Capture: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Capture | Poke Adventure</title>
+        <title>Capture | Poké Adventure</title>
       </Head>
 
       <Scene>

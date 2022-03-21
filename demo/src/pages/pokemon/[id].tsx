@@ -20,7 +20,7 @@ export const PokeView = ({ pokemon }: PokeViewProps) => {
   return (
     <>
       <Head>
-        <title>{pokemon.name} | Poke Adventure</title>
+        <title>{pokemon.name} | Poké Adventure</title>
       </Head>
 
       <PokeCard pokemon={pokemon} />
