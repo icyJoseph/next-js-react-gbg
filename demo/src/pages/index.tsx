@@ -1,4 +1,5 @@
 import Head from "next/head";
+import NextImage from "next/image";
 import Link from "next/link";
 
 import { Notice } from "components/Notice";
@@ -35,12 +36,24 @@ export const Home = () => {
           taken from the Pokemon API.
         </p>
 
+        <p className="nes-text">
+          Only the first{" "}
+          <span className="nes-text is-primary">251 Pokemon</span> are
+          supported. You can view information about any of these at{" "}
+          <Link href="/pokemon/1">
+            <a>/pokemon/[id]</a>
+          </Link>
+          .
+        </p>
+
         <Notice>
           <div className="nes-balloon from-left">
             <p className="nes-text">
-              This application uses a Cookie to save your collection.
+              This site uses a Cookie to save your collection.
             </p>
             <p className="nes-text is-error">Terrible and lazy decision!</p>
+
+            <p className="nes-text is-error">This site does not track you.</p>
           </div>
 
           <div>
@@ -129,6 +142,10 @@ export const Home = () => {
           The pokemon collection page, and additional pokemon views are
           generated on demand.
         </p>
+
+        <div>
+          <NextImage src="/architecture.png" width="1148" height="851" />
+        </div>
       </section>
     </>
   );
