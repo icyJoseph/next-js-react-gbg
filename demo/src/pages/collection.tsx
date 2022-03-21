@@ -4,10 +4,11 @@ import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
 import { CollectionGrid } from "components/CollectionGrid";
+import { Pagination } from "components/Pagination";
 import { PokeArticle } from "components/PokeArticle";
 import { USER_TOKEN, verifyUserToken } from "lib/token";
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 6;
 
 const getAriaProps = ({ page, index }: { page: number; index: number }) =>
   ({
@@ -42,9 +43,10 @@ export const PokeCollection = ({
       <section>
         <h1>My Collection</h1>
 
-        <nav role="navigation" aria-label="Collection Navigation">
+        <Pagination role="navigation" aria-label="Collection Navigation">
           {btnIndexes.map(({ index }) => (
             <button
+              className="nes-btn"
               key={index}
               onClick={() => setPage(index)}
               {...getAriaProps({ page, index: index })}
@@ -52,7 +54,7 @@ export const PokeCollection = ({
               {index + 1}
             </button>
           ))}
-        </nav>
+        </Pagination>
 
         <CollectionGrid>
           {collection
