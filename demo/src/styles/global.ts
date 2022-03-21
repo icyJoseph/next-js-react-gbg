@@ -38,4 +38,13 @@ export const GlobalStyle = createGlobalStyle`
         display: block;
         overflow-y: auto;
     }
+
+    .capitalize {
+        text-transform: capitalize;
+    }
+
+    [data-reach-dialog-content] img {
+        image-rendering: pixelated;
+    }
+    
 `;
