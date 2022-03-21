@@ -6,11 +6,14 @@ import { assert } from "superstruct";
 
 import { useWildPokemon } from "hooks/useWildPokemon";
 import { sleep } from "lib/sleep";
-import { Catch, Status } from "types";
+import { Catch, Pokemon, Status } from "types";
 
 type StatusProps = { status: Status };
 
-type PokeCallbacks = { onFailure: () => void; onCapture: () => void };
+type PokeCallbacks = {
+  onFailure: () => void;
+  onCapture: (pk: Pokemon) => void;
+};
 
 const StyledDiv = styled(motion.img)`
   width: 240px;
@@ -68,7 +71,7 @@ export const WildPokemon = forwardRef<HTMLImageElement, WildPokemonProps>(
 
           assert(data, Catch);
 
-          return data.success ? onCapture() : onFailure();
+          return data.success ? onCapture(pokemon) : onFailure();
         })
         .catch(() => onFailure());
 

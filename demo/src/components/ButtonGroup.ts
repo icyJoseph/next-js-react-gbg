@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-export const Pagination = styled.nav`
+type ButtonGroupProps = { gap?: string };
+
+export const ButtonGroup = styled.div<ButtonGroupProps>`
   margin: 0 auto;
   text-align: center;
 
@@ -8,5 +10,5 @@ export const Pagination = styled.nav`
 
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: ${(props) => props.gap || "0.5rem"};
 `;

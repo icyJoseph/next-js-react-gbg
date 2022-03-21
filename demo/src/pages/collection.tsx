@@ -3,8 +3,8 @@ import { useMemo, useState } from "react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Head from "next/head";
 
+import { ButtonGroup } from "components/ButtonGroup";
 import { CollectionGrid } from "components/CollectionGrid";
-import { Pagination } from "components/Pagination";
 import { PokeArticle } from "components/PokeArticle";
 import { USER_TOKEN, verifyUserToken } from "lib/token";
 
@@ -43,7 +43,11 @@ export const PokeCollection = ({
       <section>
         <h1>My Collection</h1>
 
-        <Pagination role="navigation" aria-label="Collection Navigation">
+        <ButtonGroup
+          as="nav"
+          role="navigation"
+          aria-label="Collection Navigation"
+        >
           {btnIndexes.map(({ index }) => (
             <button
               className={`nes-btn ${page === index ? "is-primary" : ""}`.trim()}
@@ -54,7 +58,7 @@ export const PokeCollection = ({
               {index + 1}
             </button>
           ))}
-        </Pagination>
+        </ButtonGroup>
 
         <CollectionGrid>
           {collection
