@@ -42,9 +42,4 @@ export const GlobalStyle = createGlobalStyle`
     .capitalize {
         text-transform: capitalize;
     }
-
-    [data-reach-dialog-content] img {
-        image-rendering: pixelated;
-    }
-    
 `;

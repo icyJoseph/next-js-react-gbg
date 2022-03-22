@@ -1,14 +1,10 @@
-import "@reach/dialog/styles.css";
 import { useEffect, useRef, useState, useCallback } from "react";
 
-import Dialog from "@reach/dialog";
 import { useAnimation, type AnimationControls } from "framer-motion";
 import type { NextPage } from "next";
 import Head from "next/head";
-import NextImage from "next/image";
-import Link from "next/link";
 
-import { ButtonGroup } from "components/ButtonGroup";
+import { CaptureDialog } from "components/CaptureDialog";
 import { Scene } from "components/CaptureScene";
 import { PokeBall } from "components/PokeBall";
 import { WildPokemon } from "components/WildPokemon";
@@ -100,39 +96,10 @@ const Capture: NextPage = () => {
           <title>🎉🎉🎉 | Poké Adventure</title>
         </Head>
 
-        <Dialog isOpen aria-label="Success! You captured a Pokémon">
-          <h1 className="nes-text is-success">Nice!</h1>
-
-          <p>
-            You captured a{" "}
-            <span className="nes-text is-primary capitalize">
-              {captured?.name}
-            </span>
-          </p>
-
-          {captured && (
-            <NextImage
-              src={captured.sprites.frontDefault}
-              width="180"
-              height="180"
-              alt={captured.name}
-            />
-          )}
-          <ButtonGroup gap="1rem">
-            <Link href={`/pokemon/${captured?.id}`}>
-              <a className="nes-btn is-primary">
-                <span className="capitalize">{captured?.name}</span>
-              </a>
-            </Link>
-
-            <button
-              className="nes-btn is-error"
-              onClick={() => setStatus("pending")}
-            >
-              Capture more
-            </button>
-          </ButtonGroup>
-        </Dialog>
+        <CaptureDialog
+          captured={captured}
+          onDismiss={() => setStatus("pending")}
+        />
       </>
     );
   }
@@ -144,11 +111,6 @@ const Capture: NextPage = () => {
       </Head>
 
       <Scene>
-        {/* TODO Remove */}
-        <div style={{ position: "absolute" }}>
-          <span>{status}</span>
-        </div>
-
         <WildPokemon
           status={status}
           onCapture={onCapture}
