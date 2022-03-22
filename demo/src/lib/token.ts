@@ -2,6 +2,8 @@ import { SignJWT, jwtVerify } from "jose";
 import { nanoid } from "nanoid";
 import { assert, string, number, object } from "superstruct";
 
+import { SUPPORTED_POKEMON } from "lib/constants";
+
 export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 export const USER_TOKEN = "app-token";
 
@@ -33,8 +35,9 @@ export async function verifyUserToken(token: string | undefined) {
     return { status: 401, message: "Your token is invalid." };
   }
 }
-
-const initial = () => `\$${Array.from({ length: 251 }, () => "x").join("")}`;
+// $ plus 251 'x'
+const initial = () =>
+  `\$${Array.from({ length: SUPPORTED_POKEMON }, () => "x").join("")}`;
 
 export const createUserToken = (pokemonDb?: string, jti?: string) =>
   new SignJWT({

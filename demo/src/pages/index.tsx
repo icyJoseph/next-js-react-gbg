@@ -3,6 +3,7 @@ import NextImage from "next/image";
 import Link from "next/link";
 
 import { Notice } from "components/Notice";
+import { SUPPORTED_POKEMON } from "lib/constants";
 
 export const Home = () => {
   return (
@@ -45,9 +46,11 @@ export const Home = () => {
         </p>
 
         <p className="nes-text">
-          Only the first{" "}
-          <span className="nes-text is-primary">251 Pokémon</span> are
-          supported. You can view information about any of these at{" "}
+          You can only capture the first{" "}
+          <span className="nes-text is-primary">
+            {SUPPORTED_POKEMON} Pokémon
+          </span>
+          . However, you can view information for any Pokémon at{" "}
           <Link href="/pokemon/1">
             <a>/pokemon/[id]</a>
           </Link>

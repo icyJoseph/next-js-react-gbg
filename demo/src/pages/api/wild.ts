@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { SUPPORTED_POKEMON } from "lib/constants";
 import { fetchPokemon } from "lib/pokemon";
 import type { Pokemon, Message } from "types";
 
@@ -8,7 +9,7 @@ export async function wildPokemon(
   res: NextApiResponse<Pokemon | Message>
 ) {
   try {
-    const id = Math.floor(Math.random() * 251) + 1;
+    const id = 1 + Math.floor(Math.random() * SUPPORTED_POKEMON);
 
     const data = await fetchPokemon(id);
 
