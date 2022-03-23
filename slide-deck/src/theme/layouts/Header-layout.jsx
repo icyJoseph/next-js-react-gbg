@@ -9,8 +9,6 @@ import { HeaderLayout, Place } from "@mdxp/components";
 const MDXPHeaderLayout = ({ children, showSlideNum = true, sx = {} }) => {
   const { slideIndex } = useDeck();
 
-  console.log({ showSlideNum });
-
   return (
     <HeaderLayout
       sxHeader={{
@@ -20,29 +18,14 @@ const MDXPHeaderLayout = ({ children, showSlideNum = true, sx = {} }) => {
         textAlign: "center",
         padding: "0",
         lineHeight: "160%",
+        "& > code": {
+          fontVariant: "none",
+        },
       }}
       sx={sx}
     >
       {children}
       <Place bottom="0" sx={{ width: "100%", zIndex: 1 }}>
-        {/* TODO: Add AFRY X Logo */}
-        {/* <span
-          sx={{
-            height: [
-              (t) => t.fontSizes.large,
-              (t) => t.fontSizes.small,
-              (t) => t.fontSizes.large,
-              (t) => t.fontSizes.large,
-            ],
-            position: "absolute",
-            bottom: 0,
-            ml: 2,
-            mb: 1,
-          }}
-        >
-          AFRY X
-        </span> */}
-
         {showSlideNum && (
           <div
             sx={{

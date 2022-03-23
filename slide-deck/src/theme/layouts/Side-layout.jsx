@@ -34,10 +34,14 @@ const MDXPSideLayout = ({ children, split = 1, showSlideNum = true }) => {
             "& *:first-child": {
               mt: 1,
             },
+            "& code": {
+              fontVariant: "none",
+            },
           }}
         >
           {col1}
         </Block>
+
         <Flex
           m="0"
           px="4"

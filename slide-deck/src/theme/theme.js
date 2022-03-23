@@ -116,7 +116,7 @@ export default {
   /* Style Applications */
   styles: {
     root: {
-      bg: "black",
+      bg: "AFRYXBackground",
     },
 
     pre: {
@@ -137,9 +137,9 @@ export default {
     },
 
     strong: {
-      fontWeight: "default",
+      fontWeight: "strong",
       color: "MDXPGray0",
-      fontSize: "1.2em",
+      fontSize: "1em",
     },
 
     blockquote: {
