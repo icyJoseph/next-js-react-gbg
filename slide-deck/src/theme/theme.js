@@ -147,6 +147,7 @@ export default {
       borderLeft: "10px solid #ccc",
       margin: "0 auto",
       padding: "16px",
+      boxShadow: "0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)",
 
       "& p": {
         margin: 0,

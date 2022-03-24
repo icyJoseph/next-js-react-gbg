@@ -37,6 +37,10 @@ const MDXPSideLayout = ({ children, split = 1, showSlideNum = true }) => {
             "& code": {
               fontVariant: "none",
             },
+
+            "& a": {
+              color: "AFRYXElement",
+            },
           }}
         >
           {col1}

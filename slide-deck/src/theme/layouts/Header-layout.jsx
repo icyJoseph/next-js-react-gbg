@@ -18,11 +18,18 @@ const MDXPHeaderLayout = ({ children, showSlideNum = true, sx = {} }) => {
         textAlign: "center",
         padding: "0",
         lineHeight: "160%",
-        "& > code": {
+        "& code": {
           fontVariant: "none",
         },
+        "& a": {
+          color: "MDXPGray6",
+        },
       }}
-      sx={sx}
+      sx={{
+        "& p": { maxWidth: "45ch", textAlign: "left" },
+        "& img": { width: "80%", maxWidth: "800px" },
+        ...sx,
+      }}
     >
       {children}
       <Place bottom="0" sx={{ width: "100%", zIndex: 1 }}>
