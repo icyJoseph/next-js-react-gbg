@@ -2,7 +2,7 @@
   "description": "MDXP Slides",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
+    "dev": "webpack-dev-server --open --mode development",
     "build": "yon build:web && yon build:onepage && yon build:pdf",
     "build:web": "cross-env MDXP_MODE=web PUBLIC_PATH=./ ANALYZE=true webpack --mode production",
     "build:onepage": "cross-env MDXP_MODE=onepage webpack --mode production && rimraf dist/onepage/*.js dist/onepage/*.css",
