@@ -1,9 +1,559 @@
+<BlankLayout>
+
 # Next.js
 
 The React Framework for Production
 
+</BlankLayout>
+
 ---
 
+## Yet Another Framework?
 
+> A JavaScript framework is born every minute
 
+We should be critical of every dependency we use
 
+<Note>
+We are familiar with the joke, "a JavaScript framework is born every minute".
+
+If you are a React Developer, there's a chance that you learned to use React through, Create React App (CRA).
+
+In my case, I need to always know all the little details of how something works,
+so I had initially started out with Webpack, in order to understand that my code,
+written in modern JavaScript is compiled by Babel, and that it was bundled by Webpack.
+
+However, once I found myself repeating the same configuration over and over,
+I followed the crowd, and started to use Create React App.
+
+</Note>
+
+---
+
+## Adoption Plan for React
+
+- Building entire applications using React was the end goal
+
+However, the adoption plan for React was to:
+
+- Gradually transform your UI to use React, one part at a time
+- This is why, React makes no assumptions about where it runs
+
+<Note>
+Let us remember that, there was a time when people were unsure about using 
+Create React App for production applications.
+
+Many saw CRA as an educational tool, and nothing more.
+
+Let us **also** remember that, although, building entire applications
+using React was the end goal, initially, the adoption plan for React was
+to gradually transform parts of your UI to use React.
+
+How should a production React App look like? Most people didn't know at the time.
+
+Naturally, if you have spend time using Create React App,
+your own Webpack, or whatever other means to use React,
+seeing yet another one might be unsettling.
+
+I've heard people before saying, why?, I already got something working for me,
+or "pfft, ...a JavaScript framework is born every minute"
+
+</Note>
+
+---
+
+## The paradox of choice
+
+Next.js, Remix, Astro, CRA, Vite, Parcel, Gastby
+
+<Note>
+If we think of React as the Linux Kernel, then,
+CRA, your own Webpack, Parcel, Vite, Next.js, 
+are all Distributions.
+
+For Svelte for example, there's Svelte-Kit.
+
+Still, why do we have so many?
+
+Honestly, I don't really know, but I do see that
+each aims at solving a particular issue, and whether
+that issue is relevant anymore, is always up for debate.
+
+</Note>
+
+---
+
+## Framework competition is good
+
+The extreme progression in these type of production frameworks,
+has lead to other languages getting involved:
+
+- `esbuild` written in Go
+- `SWC` written in Rust
+
+---
+
+## The problem we are trying to solve
+
+- Ship a React App, properly bundled
+- Keep Webpack under control
+- Code React from the start
+- Development Experience, focus on business code
+- Use any styling solution we want
+- Be fast, speed is good
+
+---
+
+## The value proposition
+
+Next.js is a flexible React framework that gives you building blocks to create fast web applications.
+
+By framework, we mean Next.js handles the tooling and configuration needed for React,
+and provides additional structure, features, and optimizations for your application.
+
+We could say it is a Full Stack Web SDK, based on React.
+
+---
+
+## The elevator pitch
+
+> **Next.js** gives you the **best developer experience** with
+> all the features you need for **production**:
+>
+> - Hybrid static and server rendering,
+> - **TypeScript** support,
+> - Smart bundling,
+> - Route pre-fetching, and more.
+>
+> **No config needed.**
+
+---
+
+## Features
+
+- The Next server
+- `Server Side Rendering` (SSR), both at build and runtime
+- `Incremental Static Regeneration` (ISR)
+- Dynamic Routes
+- API Routes
+- Built in Router
+- Server, Client bundle separation
+
+<Note>
+Learning to use Next.js, I think, 
+is a good next step for front end developers,
+because it is an intuitive way to learn 
+to use Node.js on the back end, 
+and to learn a full application stack, 
+which is more valuable than just knowing how to use a framework.
+
+It is a great first step into learning how to architect
+an application beyond the views, and rather learn how
+to deliver a value proposition end to end.
+
+In this presentation I want to cover many topics,
+for most I cannot do a full deep dive,
+but I still want readers to know about as many as possible.
+
+</Note>
+
+---
+
+## Even more features
+
+- `_middleware`
+- Full control over your SEO
+- Static Site export, like `CRA`
+- Magic Tags: `next/image`, and `next/script`
+- `CSS-in-JS` solutions can render stylesheets on the server
+- Owned by Vercel
+
+---
+
+## Server Side Rendering
+
+### Challenges and pitfalls
+
+- Isomorphic JavaScript
+- No window
+- JavaScript Contexts
+- Memory Leaks
+- Time to Visible and Time to Interactive
+- Divergent HTML
+
+These are not problems with Next.js, these are just challenges in the SSR world.
+
+---
+
+## Isomorphic JavaScript
+
+> Fancy name, for something simple
+
+The first frame rendered on the client, must match the frame rendered by the server.
+
+Also know as Universal JavaScript.
+
+This is basically a handover from Server to Client.
+
+---
+
+## No window
+
+---
+
+## JavaScript Context
+
+---
+
+## Memory Leaks
+
+---
+
+## Time To Visible < Time To Interactive
+
+---
+
+## Divergent HTML
+
+---
+
+## Success Story
+
+### Wix.com
+
+![Wix Time To Visible with SSR](./assets/wix_ttv_with_ssr.png)
+
+---
+
+## Tool Box
+
+- Anatomy of a `Next.js` project
+- `_app` and `_document`
+- Shared Layouts
+- `next/router`
+- Dynamic Routes
+- API Routes
+- Type of SSR
+- Code Elimination
+- `_middleware`
+- `next.config.js`
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={4}>
+
+## New project
+
+In the standard configuration, there's a couple of
+`magic` folders:
+
+- `public`
+- `pages`
+- `pages/api`
+
+Or use a [boilerplate](https://github.com/ixartz/Next-js-Boilerplate)
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```bash
+yarn create next-app --typescript
+```
+
+</Card>
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```shell
+.
+├── README.md
+├── next-env.d.ts
+├── next.config.js
+├── node_modules
+├── package.json
+├── pages
+│  ├── _app.tsx
+│  ├── api
+│  │  └── hello.ts
+│  └── index.tsx
+├── public
+│  ├── favicon.ico
+│  └── vercel.svg
+├── styles
+│  ├── Home.module.css
+│  └── globals.css
+├── tsconfig.json
+└── yarn.lock
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={4}>
+
+## File Structure
+
+You can use `src` folder to group:
+
+- `pages`
+- `styles`
+- `components`
+- etc.
+
+Config files must be at the root.
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```shell
+.
+├── README.md
+├── next-env.d.ts
+├── next.config.js
+├── node_modules
+├── package.json
+├── public
+│   ├── favicon.ico
+│   └── vercel.svg
+├── src
+│   ├── pages
+│   │   ├── _app.tsx
+│   │   ├── api
+│   │   │   └── hello.ts
+│   │   └── index.tsx
+│   └── styles
+│       ├── Home.module.css
+│       └── globals.css
+├── tsconfig.json
+└── yarn.lock
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={5}>
+
+## Existing Project
+
+Create a `pages` directory, and place
+your routes inside it.
+
+Add scripts to your `package.json` to do :
+
+- `next dev`
+- `next build`
+- `next start`
+- `next lint`
+
+[Incremental adoption](https://nextjs.org/blog/incremental-adoption).
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```shell
+yarn add next react react-dom --exact
+yarn add --dev typescript @types/node @types/react --exact
+touch tsconfig.json
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+## `_app` and `_document`
+
+---
+
+## Shared Layout
+
+---
+
+## Dynamic Routes
+
+---
+
+## API Routes
+
+---
+
+## Types of SSR
+
+- During Build Time: `next build`
+- During Runtime: `next start`
+
+Controlled from `/pages` level, based on what each page exports.
+
+Automatic, `getStaticProps`, `getStaticPaths`, `getServerSideProps`.
+
+> `getInitialProps` is no longer recommended
+
+---
+
+## Build Time SSR
+
+Just export a component as default from a `page`, or you can fetch data for your pages, at build time, by using:
+
+- `getStaticProps`
+- `getStaticPaths`
+
+---
+
+## Runtime SSR
+
+You can fetch data for your pages when the server is already deployed.
+
+- On demand
+  - `getServerSideProps`
+- Incrementaly
+  - `getStaticProps` and `getStaticPaths` with fallback
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={4}>
+
+## Automatic
+
+Next.js calculates that a page like this,
+can be rendered at build time.
+
+The page can still use client side JavaScript to fetch
+more data and update some of its elements.
+
+`getInitialProps`, here or, in `_app`, disables this behavior.
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+// src/pages/index.tsx
+import Head from "next/head";
+import useSWR from "swr";
+
+const Home = () => {
+  const { data } = useSWR("some-data", fetcher);
+
+  return (
+    <>
+      <Head>
+        <title>Hello</title>
+      </Head>
+
+      <section>
+        <p>Hello World!</p>
+      </section>
+    </>
+  );
+};
+
+export default Home;
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={3}>
+
+### `getStaticProps`
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={3}>
+
+### `getStaticPaths`
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={3}>
+
+### `getServerSideProps`
+
+</MDXPSideLayout>
+
+---
+
+## [`next-code-elimination.vercel.app`](https://next-code-elimination.vercel.app/)
+
+<iframe
+  src="https://next-code-elimination.vercel.app/"
+  style={{ width: "100%", height: "80%", maxWidth: "1580px" }}
+/>
+
+---
+
+## `_middleware`
+
+---
+
+## `next.config.js`
+
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '1580px', p: 0, '& > pre': { p: 1 }}}>
+
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  poweredByHeader: false,
+  reactStrictMode: true,
+  images: {
+    domains: ["raw.githubusercontent.com"],
+  },
+  compiler: {
+    styledComponents: true,
+  },
+  webpack(config, { isServer }) {
+    return config;
+  },
+};
+
+module.exports = nextConfig;
+```
+
+</Card>
+
+---
+
+## Left out
+
+- Dynamic Imports
+- Middleware for `api` routes (not `_middleware`)
+- `next/image` and `next/script`
+- Testing with `rtl`, `ts-mockito`, `MSW`, and friends.
+- Authentication patterns
+- MDX support
+- React 18 and Server Components Preview
+- Incremental Static Regeneration, on detail
+- Using React Dev Tools
+
+---
+
+## Client Side Escape Hatch
+
+If you don't have a server, you can use `next export` to build a Static HTML Export,
+which can be used as a standalone application, without a Node.js server.
+
+---
+
+## Demo Time
+
+Four pages:
+
+- Landing page
+- Single Pokemon view
+- Pokemon Capture
+- View Pokemon Collection
+
+Uses `_middleware` to control the presence of Pokemon Cookie.
+
+---
+
+## Wrap up
