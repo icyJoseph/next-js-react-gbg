@@ -904,24 +904,20 @@ export function ActiveLink({ children, href }) {
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={5}>
+<MDXPSideLayout showSlideNum={false} split={3}>
 
 ## Dynamic Routes
 
 Not all pages can be statically defined from the beginning.
 
 - `pages/post/[slug].tsx`
-  - `/post/hello-world`
+  - `/post/hello`
 - `pages/post/[...slug].tsx`
-  - `/post/2022/03/31/hello-world`
+  - `/post/2022/03/31/hello`
   - `/post/2020/08/hello`
-
-And least preferred:
-
 - `pages/post/[[...slug]].tsx`
-
   - `/post`
-  - `/post/2022/03/31/hello-world`
+  - `/post/2022/03/31/hello`
 
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
@@ -948,7 +944,7 @@ export default Post;
 
 ```shell
 > undefined
-> hello-world
+> hello
 ```
 
 </Card>
@@ -959,7 +955,7 @@ export default Post;
 
 ```shell
 > undefined
-> ['2022', '03', '31', 'hello-world']
+> ['2022', '03', '31', 'hello']
 
 ```
 
@@ -1024,8 +1020,10 @@ export default wildPokemon;
 
 - During Build Time: `next build`
 - During Runtime: `next start`
+- Next.js polyfills `fetch` on server
+- You can share code between API routes and SSR
 
-Controlled from `/pages` level, based on what each page exports.
+Controlled from `src/pages` level, based on what each page exports.
 
 Automatic, `getStaticProps`, `getStaticPaths`, `getServerSideProps`.
 
@@ -1100,14 +1098,45 @@ export default Home;
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={3}>
+<MDXPSideLayout showSlideNum={false} split={2}>
 
 ### `getStaticProps`
 
+- The data required to render the page is available at build time
+  - Ahead of a user's request
+  - The data comes from a headless CMS
+  - The data can be publicly cached (not user-specific)
+- The page must be pre-rendered (for SEO) and be very fast
+  - Generates HTML and JSON, which can be cached by a CDN for performance
+- `getStaticProps` can ONLY be exported from a page.
+- Always runs during `next build`
+
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
 ```tsx
+// src/pages/posts.tsx
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
+import { getPosts } from "lib/posts";
 
+// This function gets called at build time on server-side.
+export const getStaticProps: GetStaticProps<Post[]> = async () => {
+  // Use an external API to get posts.
+  const posts = await getPosts("https://.../posts");
+
+  // Return { props: { posts } }, as props to Blog at build time
+  return {
+    props: {
+      posts,
+    },
+  };
+};
+
+// posts will be populated at build time by getStaticProps()
+function Blog({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
+  return <PostList posts={posts} />;
+}
+
+export default Blog;
 ```
 
 </Card>
@@ -1116,14 +1145,53 @@ export default Home;
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={3}>
+<MDXPSideLayout showSlideNum={false} split={4}>
 
 ### `getStaticPaths`
 
+- When you have dynamic pages, which use `getStaticProps`, you must use `getStaticPaths`
+- Enables `ISR` with `fallback: true`, `fallback: 'blocking'`
+
+Values of `fallback` control `ISR`:
+
+- `true`, allows generation at runtime
+  - Allows showing a fallback
+  - `getStaticProps` might return 404
+- `false`, directly returns 404
+- `blocking`, same as true, but
+  - No fallback UI
+
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
 ```tsx
+// src/pages/pokemon/[id].tsx
+const initial = [1, 4, 7];
 
+export const getStaticPaths: GetStaticPaths = () => {
+  const paths = initial.map((id) => ({ params: { id: `${id}` } }));
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps<PokeProps> = async (ctx) => {
+  const id = Number(ctx.params?.id);
+  if (Number.isNaN(idx)) return { notFound: true };
+
+  try {
+    const pokemon = await fetchPokemon(idx);
+    return { props: { pokemon }, revalidate: 900 };
+  } catch (e) {
+    return { notFound: true, revalidate: 500 };
+  }
+};
+
+const PokeView = ({ pokemon }: PokeViewProps) => {
+  const router = useRouter();
+  if (router.isFallback) return <div>Loading...</div>;
+
+  return <PokeCard pokemon={pokemon} />;
+};
+
+export default PokeView;
 ```
 
 </Card>
@@ -1132,19 +1200,84 @@ export default Home;
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={3}>
+<MDXPSideLayout showSlideNum={false} split={4}>
 
 ### `getServerSideProps`
+
+Export a function called `getServerSideProps` from a page,
+Next.js pre-renders the page on each request using the data
+returned by `getServerSideProps`.
+
+This is useful if you want to fetch data that changes often,
+and have the page update to show the most current data.
+
+- Never runs on the browser
+- `getServerSideProps` can only be exported from a page.
+- Possible, but inefficient, to call `api/routes` from here,
+  call your CMS, database, or whatever you need, directly.
 
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
 ```tsx
+import type { InferGetServerSidePropsType } from "next";
 
+export const getServerSideProps = async (ctx) => {
+  const token = ctx.req.cookies[USER_TOKEN];
+
+  const data = await deriveFromToken(token);
+
+  // if ("status" in data)
+  //   return { redirect: { destination: "/", permanent: false } };
+  if ("status" in data) return { notFound: true };
+
+  const collection = data.pokemonDb;
+
+  return { props: { collection } };
+};
+
+export const PokeCollection = ({
+  collection,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  return <CollectionGrid collection={collection} />;
+};
+
+export default PokeCollection;
 ```
 
 </Card>
 
 </MDXPSideLayout>
+
+---
+
+## TypeScript in SSR
+
+<Card sx={{p: 0, '& > pre': { p: 1 }, maxWidth:'55ch'}}>
+
+```tsx
+type Redirect =
+  | { destination: string; basePath?: false } & (
+      | { statusCode: 301 | 302 | 303 | 307 | 308 }
+      | { permanent: boolean }
+    );
+
+type GetStaticPropsResult<P> =
+  | { props: P; revalidate?: number | boolean }
+  | { redirect: Redirect; revalidate?: number | boolean }
+  | { notFound: true; revalidate?: number | boolean };
+
+type GetServerSidePropsResult<P> =
+  | { props: P | Promise<P> }
+  | { redirect: Redirect }
+  | { notFound: true };
+
+type GetStaticPathsResult<P extends ParsedUrlQuery = ParsedUrlQuery> = {
+  paths: Array<string | { params: P; locale?: string }>;
+  fallback: boolean | "blocking";
+};
+```
+
+</Card>
 
 ---
 
