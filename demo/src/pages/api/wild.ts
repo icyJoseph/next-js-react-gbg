@@ -5,9 +5,11 @@ import { fetchPokemon } from "lib/pokemon";
 import type { Pokemon, Message } from "types";
 
 export async function wildPokemon(
-  _req: NextApiRequest,
+  req: NextApiRequest,
   res: NextApiResponse<Pokemon | Message>
 ) {
+  if (req.method !== "GET")
+    return res.status(404).json({ message: "Not Found" });
   try {
     const id = 1 + Math.floor(Math.random() * SUPPORTED_POKEMON);
 
