@@ -414,7 +414,7 @@ function Parent() {
 
 </Card>
 
-> If `Child` must use `useLayoutEffect`, this helps out
+> If `Child` uses `useLayoutEffect`, this also helps out
 
 ---
 
@@ -468,7 +468,7 @@ Diagnostics for performance measurement. https://nodejs.org/en/docs/guides/diagn
 - Anatomy of a `Next.js` project
 - `_app` and `_document`
 - Layouts
-- `next/router`
+- SPA Routing
 - Dynamic Routes
 - API Routes
 - SSR Techniques
@@ -618,6 +618,7 @@ but you can customize it, by creating `pages/_document.tsx`.
   - Class name on `body`
   - Collect styles for styled components
   - `lang` on `html`
+  - Load fonts
 
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
@@ -759,6 +760,142 @@ function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
 }
 
 export default CustomApp;
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={5}>
+
+## SPA Routing
+
+Pages in Next.js are associated to the their file name.
+
+For example:
+
+- `src/pages/contact.tsx` accessible at `/contact`,
+- `src/pages/user/profile.tsx` accessible at `/user/profile`.
+
+To transition between pages use `Link` from `next/link`.
+
+### `next/link`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+import Link from "next/link";
+
+function Links() {
+  return (
+    <>
+      <Link href="/contact">
+        <a className="anchor-style">Contact</a>
+      </Link>
+      <Link href="/user/profile">
+        <a className="anchor-style">Profile</a>
+      </Link>
+    </>
+  );
+}
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={5}>
+
+## SPA Routing
+
+The Next.js Router can be access from `next/router`:
+
+- `Router`
+- `useRouter`
+- `withRouter`
+
+The Router gives access to the current route, queries, events, and
+methods for imperative navigation.
+
+It is recommended to use `useRouter`, while `Router` can be used to attach
+event listeners on persistent layouts.
+
+### `next/router`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+import { useEffect } from "react";
+import type { AppProps } from "next/app";
+import Router from "next/router";
+import NProgress from "nprogress";
+
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
+
+function App({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    const handler = (url: string) => pageview(url);
+    Router.events.on("routeChangeComplete", handler);
+
+    return () => Router.events.off("routeChangeComplete", handler);
+  }, []);
+
+  return <MyAppRoot />;
+}
+
+export default App;
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={3}>
+
+## SPA Routing
+
+Notable router properties and methods:
+
+- `pathname`
+  - actual path in `src/pages`
+- `query`
+  - As a plain object
+- `asPath`
+  - path visible in the browser
+- `push`
+- `replace`
+- `events`
+
+### `next/router`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+import { useRouter } from "next/router";
+
+export function ActiveLink({ children, href }) {
+  const router = useRouter();
+  const className = router.asPath === href ? "link link-active" : "link";
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    router.push(href);
+  };
+
+  return (
+    <a href={href} onClick={handleClick} className={className}>
+      {children}
+    </a>
+  );
+}
 ```
 
 </Card>
@@ -971,8 +1108,11 @@ Uses `_middleware` to control `app-cookie`.
 ## Wrap up
 
 - React is a means to an end
-- Next.js builds on top of React's responsibility
+- Next.js builds on top of React's responsibilities
 - Data fetching, routing, API routes, and optimizations
+- All batteries included
+- Ever growing community
+- Constant updates, with fixes and new features
 - A good place to deploy, Vercel
 
 <Note>
