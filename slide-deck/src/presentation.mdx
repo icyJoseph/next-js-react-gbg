@@ -904,11 +904,19 @@ export function ActiveLink({ children, href }) {
 
 ---
 
+<MDXPSideLayout showSlideNum={false} split={3}>
+
 ## Dynamic Routes
+
+</MDXPSideLayout>
 
 ---
 
+<MDXPSideLayout showSlideNum={false} split={3}>
+
 ## API Routes
+
+</MDXPSideLayout>
 
 ---
 
@@ -996,6 +1004,14 @@ export default Home;
 
 ### `getStaticProps`
 
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+
+```
+
+</Card>
+
 </MDXPSideLayout>
 
 ---
@@ -1003,6 +1019,14 @@ export default Home;
 <MDXPSideLayout showSlideNum={false} split={3}>
 
 ### `getStaticPaths`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+
+```
+
+</Card>
 
 </MDXPSideLayout>
 
@@ -1012,6 +1036,14 @@ export default Home;
 
 ### `getServerSideProps`
 
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+
+```
+
+</Card>
+
 </MDXPSideLayout>
 
 ---
@@ -1020,12 +1052,65 @@ export default Home;
 
 <iframe
   src="https://next-code-elimination.vercel.app/"
-  style={{ width: "100%", height: "80%", maxWidth: "1580px" }}
+  style={{ width: "80%", height: "80%", minWidth: "300px", maxWidth: "2560px" }}
 />
 
 ---
 
+<MDXPSideLayout showSlideNum={false} split={4}>
+
 ## `_middleware`
+
+It's in Beta, since Next.js `12.0.9`
+
+- Code over configuration
+- Runs before all siblings in `pages`
+- Runs at the (Vercel\*) Edge
+  - Zero cold start Functions
+  - Geographically close to visitors
+- You can modify responses by
+  - rewriting
+  - redirecting
+  - adding headers
+  - adding/removing queries
+
+\*V8 Runtime with a limited set of APIs. In dev mode the code runs in a sandbox environment emulator.
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```ts
+// src/pages/_middleware.ts
+import { NextRequest, NextResponse } from "next/server";
+
+export const middleware = (req: NextRequest) => {
+  const { pathname } = req.nextUrl;
+  // prevent direct access to `/api/sms`
+  if (pathname.startsWith("/api/sms")) {
+    return new Response(null, { status: 404, statusText: "Not Found" });
+  }
+
+  if (
+    pathname.startsWith("/api") || //  exclude all API routes
+    pathname.startsWith("/static") || // exclude static files
+    pathname.includes(".") // exclude all files in the public folder
+  ) {
+    return NextResponse.next();
+  }
+
+  if (pathname === "/hello-sms") {
+    const url = req.nextUrl;
+    url.pathname = "/api/sms";
+    return NextResponse.rewrite(url);
+  }
+
+  return NextResponse.next();
+};
+// export default middleware; // optional
+```
+
+  </Card>
+
+</MDXPSideLayout>
 
 ---
 
@@ -1047,6 +1132,7 @@ const nextConfig = {
   webpack(config, { isServer }) {
     return config;
   },
+  // rewrites, redirects, map headers
 };
 
 module.exports = nextConfig;
@@ -1060,6 +1146,14 @@ module.exports = nextConfig;
 
 If you don't have a server, you can use `next export` to build a Static HTML Export,
 which can be used as a standalone application, without a Node.js server.
+
+However, you'll miss out on a bunch of features, include, but not limited to:
+
+- Image optimizations
+- API Routes
+- `ISR`
+- `_middleware`
+- `getServerSideProps`
 
 ---
 
