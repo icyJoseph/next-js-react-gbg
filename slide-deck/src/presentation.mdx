@@ -904,17 +904,117 @@ export function ActiveLink({ children, href }) {
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={3}>
+<MDXPSideLayout showSlideNum={false} split={5}>
 
 ## Dynamic Routes
+
+Not all pages can be statically defined from the beginning.
+
+- `pages/post/[slug].tsx`
+  - `/post/hello-world`
+- `pages/post/[...slug].tsx`
+  - `/post/2022/03/31/hello-world`
+  - `/post/2020/08/hello`
+
+And least preferred:
+
+- `pages/post/[[...slug]].tsx`
+
+  - `/post`
+  - `/post/2022/03/31/hello-world`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+import { useRouter } from "next/router";
+
+// const slug: string | string[] | undefined
+const Post = () => {
+  const router = useRouter();
+  // without `getStaticPaths`, query is empty on first render
+  const { slug } = router.query;
+  console.log(slug);
+  return <p>Post: {slug}</p>;
+};
+
+export default Post;
+```
+
+</Card>
+
+`/post/[slug].tsx`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```shell
+> undefined
+> hello-world
+```
+
+</Card>
+
+`/post/[...slug].tsx`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```shell
+> undefined
+> ['2022', '03', '31', 'hello-world']
+
+```
+
+</Card>
 
 </MDXPSideLayout>
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={3}>
+<MDXPSideLayout showSlideNum={false} split={6}>
 
 ## API Routes
+
+Located inside `pages/api`. These are treated as API endpoints, rather than pages.
+
+These exist only server-side, and can also be Dynamic.
+
+You can access 3rd party services that require an API KEY, without having to
+leak your KEY to the client.
+
+You can also use these to hide URL's of services.
+
+These have access to entire Node.JS API.
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+// src/pages/api/wild.ts
+import type { NextApiRequest, NextApiResponse } from "next";
+
+import { SUPPORTED_POKEMON } from "lib/constants";
+import { fetchPokemon } from "lib/pokemon";
+import type { Pokemon, Message } from "types";
+
+export async function wildPokemon(
+  req: NextApiRequest,
+  res: NextApiResponse<Pokemon | Message>
+) {
+  if (req.method !== "GET")
+    return res.status(404).json({ message: "Not Found" });
+  try {
+    const id = 1 + Math.floor(Math.random() * SUPPORTED_POKEMON);
+
+    const data = await fetchPokemon(id);
+
+    return res.status(200).json(data);
+  } catch (e) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+export default wildPokemon;
+```
+
+</Card>
 
 </MDXPSideLayout>
 
