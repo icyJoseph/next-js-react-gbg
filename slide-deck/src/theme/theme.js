@@ -11,14 +11,14 @@ export default {
   },
 
   fontSizes: {
-    xxsmall: "1.2rem",
-    xsmall: "1.5rem", // 24px
-    small: "1.8rem", // 28.8px
-    base: "2.25rem", // 36px
-    large: "3rem", // 48px
-    xlarge: "4.5rem", // 72px
-    xxlarge: "6rem", // 96px
-    xxxlarge: "10rem", // 160px
+    xxsmall: "1rem", // 16px
+    xsmall: "1.25rem", // 20px
+    small: "1.5rem", // 24px
+    base: "1.75rem", // 28px
+    large: "2.25rem", // 36px
+    xlarge: "2.75rem", // 44px
+    xxlarge: "4rem", // 64px
+    xxxlarge: "6rem", // 96px
   },
 
   fontWeights: {
@@ -64,20 +64,20 @@ export default {
     muted: "#828282",
   },
 
-  breakpoints: ["0px", "1150px", "1500px"],
+  breakpoints: ["0px", "1280px", "1680px", "2560px"],
 
   /* Style Variants */
   text: {
     main: {
       fontFamily: "body",
       lineHeight: "default",
-      fontSize: ["base", "xsmall", "small", "base"],
+      fontSize: ["xsmall", "small", "base", "xlarge"],
     },
 
     mono: {
       fontFamily: "mono",
       lineHeight: "mono",
-      fontSize: ["xsmall", "xxsmall", "xxsmall", "xsmall"],
+      fontSize: ["1rem", "1rem", "1.1rem", "1.75rem"],
     },
 
     title: {
@@ -85,7 +85,7 @@ export default {
       lineHeight: "title",
       textTransform: "uppercase",
       fontWeight: "default",
-      fontSize: ["xxlarge", "xlarge", "xxlarge"],
+      fontSize: ["xlarge", "xlarge", "xxlarge", "xxxlarge"],
     },
 
     subtitle: {
@@ -94,7 +94,7 @@ export default {
       fontWeight: "light",
       textTransform: "lowercase",
       fontVariant: "small-caps",
-      fontSize: ["xlarge", "large", "xlarge"],
+      fontSize: ["base", "large", "xxlarge", "xxxlarge"],
     },
   },
 
@@ -145,9 +145,10 @@ export default {
     blockquote: {
       background: "#e0e0e0",
       borderLeft: "10px solid #ccc",
-      margin: "0 auto",
+      minWidth: "45ch",
+      margin: "24px auto",
       padding: "16px",
-      boxShadow: "0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)",
+      boxShadow: "0 9px 18px rgba(0,0,0,0.30), 0 7px 6px rgba(0,0,0,0.22)",
 
       "& p": {
         margin: 0,

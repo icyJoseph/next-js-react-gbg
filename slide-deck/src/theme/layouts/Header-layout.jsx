@@ -18,6 +18,7 @@ const MDXPHeaderLayout = ({ children, showSlideNum = true, sx = {} }) => {
         textAlign: "center",
         padding: "0",
         lineHeight: "160%",
+
         "& code": {
           fontVariant: "none",
         },
@@ -26,8 +27,14 @@ const MDXPHeaderLayout = ({ children, showSlideNum = true, sx = {} }) => {
         },
       }}
       sx={{
-        "& p": { maxWidth: "45ch", textAlign: "left" },
-        "& img": { width: "80%", maxWidth: "800px" },
+        justifyContent: "unset",
+        pt: [2, 3, 4],
+        "& p": { maxWidth: "45ch", textAlign: "left", mt: 0 },
+        "& h3": { mt: 0 },
+        "& ul": { mt: 0 },
+        "& img": { maxWidth: "58.333%" },
+        "& li": { pb: 1 },
+        "& li li": { pb: 0 },
         ...sx,
       }}
     >
