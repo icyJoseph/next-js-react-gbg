@@ -8,11 +8,17 @@ The React Framework for Production
 
 ---
 
-## Yet Another Framework?
+## Yet Another Framework...
+
+We should be critical of every dependency we use:
+
+- Why do we need it?
+- Can we solve the problem ourselves?
+- Can we trust the provider?
+- Are we bikeshedding?
+- What's in it for me?
 
 > A JavaScript framework is created every X minutes
-
-We should be critical of every dependency we use
 
 <Note>
 We are familiar with the joke, "a JavaScript framework is born every minute".
@@ -30,14 +36,16 @@ I followed the crowd, and started to use Create React App.
 
 ---
 
-## Adoption Plan for React
+## Looking Back
+
+### Adoption Plan for React
 
 - Building entire applications using React was the end goal
+- However, the adoption plan for React was to:
+  - Gradually transform your UI to use React, one part at a time
+  - This is why React makes no assumptions about where it runs
 
-However, the adoption plan for React was to:
-
-- Gradually transform your UI to use React, one part at a time
-- This is why, React makes no assumptions about where it runs
+> How should a production React App look like?
 
 <Note>
 Let us remember that, there was a time when people were unsure about using 
@@ -64,9 +72,25 @@ or "pfft, ...a JavaScript framework is born every minute"
 
 ## The paradox of choice
 
-Next.js, Remix, Astro, CRA, Vite, Parcel, Gastby
+<Block sx={{ maxWidth:'80%', minWidth: '980px'}}>
 
-> The fear or missing out
+- Next.js
+  - The React Framework for Production
+- Remix
+  - Build Better Websites. Create modern, resilient user experiences with web
+    fundamentals.
+- Astro
+  - Build fast websites, faster. 🚀🧑‍🚀✨
+- Vite
+  - Next generation frontend tooling. It's fast!
+- CRA
+  - Set up a modern web app by running one command.
+- Parcel
+  - The zero configuration build tool for the web. 📦🚀
+- Gastby
+  - Build blazing fast, modern apps and websites with React
+
+</Block>
 
 <Note>
 If we think of React as the Linux Kernel, then,
@@ -80,6 +104,8 @@ Still, why do we have so many?
 Honestly, I don't really know, but I do see that
 each aims at solving a particular issue, and whether
 that issue is relevant anymore, is always up for debate.
+
+The Fear Of Missing Out and the Sunk Cost falacy
 
 </Note>
 
@@ -140,6 +166,7 @@ We could say it is a Full Stack Web SDK, based on React.
 - API Routes
 - Built in Router
 - Server, Client bundle separation
+- `fetch` polyfill for server (and client)
 
 <Note>
 Learning to use Next.js, I think, 
@@ -164,9 +191,10 @@ but I still want readers to know about as many as possible.
 ## Even more features
 
 - `_middleware`
-- Full control over your SEO
+- SEO without assumptions
 - Static Site export, like `CRA`
-- Magic Tags: `next/image`, and `next/script`
+- `next/image`
+- `next/script`
 - `CSS-in-JS` solutions can render stylesheets on the server
 - Owned by Vercel
 
@@ -189,19 +217,16 @@ These are not problems with Next.js, these are just challenges in the SSR world.
 
 ## Isomorphic JavaScript
 
-> Also know as Universal JavaScript
-
-The first frame rendered on the client, must match the frame rendered by the server.
-
-This is basically a handover from Server to Client.
-
----
-
-## Isomorphic JavaScript
+Also known as Universal JavaScript, where the
+**first frame rendered on the client**,
+must match the **frame rendered by the server**.
 
 - Server generates dry HTML (sync)
+- HTML + JS + CSS + assets send to client
 - Client hydrates the HTML (sync)
-- React 18 improves how this is done
+
+> Suspense in React 18 improves how this is done, by breaking
+> down your app into smaller independent units.
 
 <Note>
 The same code runs on the server, and on the client.
@@ -219,22 +244,22 @@ React 18 has a game changing proposal on this regard
 
 ## Isomorphic JavaScript
 
-- SEO works without assumptions.
+- SEO works without assumptions
   - CSR SPA's depend on the Search Engine's to render the view
   - Open graph cards
 - Works if JavaScript is disabled (for the most part)
 - Time to visible performance
-  - fewer roundtrips
-  - fast servers
-  - hot servers (caching)
-  - faster data fetching
-  - server and client work together
+  - Fewer roundtrips
+  - Fast servers
+  - Hot servers (caching)
+  - Faster data fetching
+  - Server and client work together
 
 ---
 
 ## No window
 
-SSR happens on the server, without window or DOM elements
+SSR happens on the server, without window or DOM elements.
 
 - Avoid initializing state based on window data
   - Use CSS to control responsive styles
@@ -243,6 +268,7 @@ SSR happens on the server, without window or DOM elements
 - It is safe to access the window or DOM elements inside:
   - `useEffect`
   - Promises and event handlers (usually)
+  - `useLayoutEffect` won't do anything
 
 ---
 
@@ -251,9 +277,10 @@ SSR happens on the server, without window or DOM elements
 - [Next SSR isMobile control for component render](https://github.com/vercel/next.js/discussions/35392)
 - [[SSR/OBS] SSR render components in wrong DOM place](https://github.com/vercel/next.js/discussions/35301)
 
-<Card sx={{width: '80%', minWidth:'300px', maxWidth: '1580px', p: 0, mb:2 , '& > pre': { p: 1 }}}>
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '55ch', p: 0, mb:2 , '& > pre': { p: 1 }}}>
 
 ```ts
+// Before
 const isOBS = useMemo(
   () => (isBrowser ? navigator?.userAgent?.indexOf("OBS") !== -1 : false),
   [isBrowser]
@@ -262,9 +289,10 @@ const isOBS = useMemo(
 
 </Card>
 
-<Card sx={{width: '80%', minWidth:'300px', maxWidth: '1580px', p: 0, mb:2 , '& > pre': { p: 1 }}}>
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '55ch', p: 0, mb:2 , '& > pre': { p: 1 }}}>
 
 ```ts
+// After
 const [isOBS, setIsOBS] = useState(false);
 
 useEffect(() => {
@@ -280,11 +308,11 @@ useEffect(() => {
 
 - Global variables are shared to all users making requests to your site
 - Sharing data between server and client is through serialization
-  - You cannot pass a class from the server to the client
-  - You may accidentally serialize a Secrets
-- Code that uses Node API's won't necessarily work on the client
-- Functions shared between server and client
-- `import { something } from '../my-lib'`
+  - You cannot pass a **Class** instance from the server to the client
+  - You may accidentally serialize a **secrets**
+- Code that uses **Node API**'s won't necessarily work on the client
+  - Functions shared between server and client
+  - `import { something } from '../my-lib'`
 
 ---
 
@@ -295,9 +323,8 @@ useEffect(() => {
   - Must restart the server
 - A Browser memory leak
   - A really bad memory leak might be caught right away
-  - Refresh the window (unless it's a really bad memory leak)
-
-> [Memory leak #35526](https://github.com/vercel/next.js/discussions/35526)
+  - Refreshing the window takes care of most
+- [Memory leak #35526](https://github.com/vercel/next.js/discussions/35526)
 
 <Note>
 Another way to look at this: You deploy your Create React App,
@@ -323,7 +350,7 @@ timers that keep on running, etc., are common memory leaks.
   - The client still has to prepare event listeners (hydration processe)
   - A visible UI, which doesn't respond, can frustrate users.
 
-React 18 prepares mitigations.
+> React 18 has mitigations
 
 <Note>
 People don't generally click within the first second of page load.
@@ -341,11 +368,11 @@ The `getServerSideProps` method sort of breaks this rule, partially.
 
 if **SSR HTML !== first CSR HTML** then **bugs will occur**.
 
-> React warns about this
-
 Happens when you rely on timing, randomness, or have unguarded access to the DOM that fails, but does not crash the SSR process.
 
 If you can't design it away, hide those divergent parts behind client side activated flags.
+
+> React warns about this
 
 <Note>
 
@@ -366,27 +393,28 @@ behind client side activated flags.
 
 ## Divergent HTML
 
-<Card sx={{width: '80%', minWidth:'300px', maxWidth: '1580px', p: 0, mb:2 , '& > pre': { p: 1 }}}>
+Generic trick to avoid rendering part of the JSX on the client.
+
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '45ch', p: 0, mb:2 , '& > pre': { p: 1 }}}>
 
 ```jsx
 function Parent() {
   const [showChild, setShowChild] = useState(false);
-
   // Wait until after client-side hydration to show
   useEffect(() => {
     setShowChild(true);
   }, []);
 
-  if (!showChild) {
-    // You can show some kind of placeholder UI here
-    return null;
-  }
+  // You can show some kind of placeholder UI here
+  if (!showChild) return null;
 
-  return <Child {...props} />;
+  return <Child />;
 }
 ```
 
 </Card>
+
+> If `Child` must use `useLayoutEffect`, this helps out
 
 ---
 
@@ -394,7 +422,7 @@ function Parent() {
 
 - [Both sides of ternary are rendered](https://github.com/vercel/next.js/discussions/34982)
 
-<Card sx={{width: '80%', minWidth:'300px', maxWidth: '1580px', p: 0, mb:2 , '& > pre': { p: 1 }}}>
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '45ch', p: 0, mb:2 , '& > pre': { p: 1 }}}>
 
 ```jsx
 return clientSecond === serverSecond ? (
@@ -439,11 +467,11 @@ Diagnostics for performance measurement. https://nodejs.org/en/docs/guides/diagn
 
 - Anatomy of a `Next.js` project
 - `_app` and `_document`
-- Shared Layouts
+- Layouts
 - `next/router`
 - Dynamic Routes
 - API Routes
-- Type of SSR
+- SSR Techniques
 - Code Elimination
 - `_middleware`
 - `next.config.js`
@@ -461,7 +489,7 @@ In the standard configuration, there's a couple of
 - `pages`
 - `pages/api`
 
-Or use a [boilerplate](https://github.com/ixartz/Next-js-Boilerplate)
+Or use [Next-js-Boilerplate](https://github.com/ixartz/Next-js-Boilerplate).
 
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
@@ -501,7 +529,7 @@ yarn create next-app --typescript
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={4}>
+<MDXPSideLayout showSlideNum={false} split={5}>
 
 ## File Structure
 
@@ -513,6 +541,8 @@ You can use `src` folder to group:
 - etc.
 
 Config files must be at the root.
+
+All Page components from `pages` must be default exports.
 
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
@@ -552,7 +582,7 @@ Config files must be at the root.
 Create a `pages` directory, and place
 your routes inside it.
 
-Add scripts to your `package.json` to do :
+Add scripts to your `package.json`:
 
 - `next dev`
 - `next build`
@@ -575,11 +605,165 @@ touch tsconfig.json
 
 ---
 
-## `_app` and `_document`
+<MDXPSideLayout showSlideNum={false} split={3}>
+
+## `_document`
+
+All Next.js projects have a default `_document` component,
+but you can customize it, by creating `pages/_document.tsx`.
+
+- Rendered on the Server
+  - Cannot put event handlers on tags
+- Modify `html`, `body` and `head` for all pages
+  - Class name on `body`
+  - Collect styles for styled components
+  - `lang` on `html`
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+// src/pages/_document.tsx
+import { Html, Head, Main, NextScript } from "next/document";
+
+export default function CustomDocument() {
+  return (
+    <Html>
+      <Head />
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+}
+
+// or (important for the DEMO)
+import Document, { DocumentContext } from "next/document";
+
+class MyDocument extends Document {
+  static async getInitialProps(ctx: DocumentContext) {
+    const initialProps = await Document.getInitialProps(ctx);
+
+    return initialProps;
+  }
+  // render is optional when extending Document
+}
+
+export default MyDocument;
+```
+
+</Card>
+
+</MDXPSideLayout>
 
 ---
 
-## Shared Layout
+<MDXPSideLayout showSlideNum={false} split={3}>
+
+## `_app`
+
+Included by default in all Next.js projects,
+but you can customize it by creating `pages/_app.tsx`.
+
+- Persisting layout between page changes
+- Keeping state when navigating pages
+- Custom error handling using `componentDidCatch`
+- Inject additional data into pages
+- Add global CSS
+- Runs both on the Server and Client
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+// src/pages/_app.tsx
+import "nes.css/css/nes.min.css";
+import type { AppProps } from "next/app";
+import { ThemeProvider } from "styled-components";
+
+import { AppContent } from "components/AppContent";
+import { AppHeader } from "components/AppHeader";
+import { Navigation } from "components/Navigation";
+import { GlobalStyle, theme } from "styles/global";
+
+function CustomApp({ Component, pageProps }: AppProps) {
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+
+      <AppHeader>
+        <Navigation />
+      </AppHeader>
+
+      <AppContent>
+        <Component {...pageProps} />
+      </AppContent>
+    </ThemeProvider>
+  );
+}
+
+export default CustomApp;
+```
+
+</Card>
+
+</MDXPSideLayout>
+
+---
+
+<MDXPSideLayout showSlideNum={false} split={3}>
+
+## Per Page Layout
+
+Because, React and friends are just JavaScript,
+if you want to do layouts on a per page basis, all you have to do is:
+
+- In the page with a specific layout:
+  - Define a `getLayout` (arbitrary name) function
+- In `_app`:
+  - If `getLayout` exists, call it
+  - Otherwise use a common layout
+
+<Card sx={{mb:1,p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+import type { ReactElement } from "react";
+
+const Page = () => <div>Hello</div>;
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <section>{page}</section>;
+};
+
+export default Page;
+```
+
+</Card>
+
+<Card sx={{p: 0, '& > pre': { p: 1 }}}>
+
+```tsx
+// src/pages/_app.tsx
+import type { ReactElement, ReactNode } from "react";
+import type { NextPage } from "next";
+import type { AppProps } from "next/app";
+
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+type AppPropsWithLayout = AppProps & { Component: NextPageWithLayout };
+
+function CustomApp({ Component, pageProps }: AppPropsWithLayout) {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout ?? ((page) => page);
+  return getLayout(<Component {...pageProps} />);
+}
+
+export default CustomApp;
+```
+
+</Card>
+
+</MDXPSideLayout>
 
 ---
 
@@ -615,26 +799,29 @@ Just export a component as default from a `page`, or you can fetch data for your
 
 ## Runtime SSR
 
-You can fetch data for your pages when the server is already deployed.
+You can fetch data and build more pages when the server is already deployed.
 
-- On demand
+- On Demand
   - `getServerSideProps`
-- Incrementaly
+- Incrementally
   - `getStaticProps` and `getStaticPaths` with fallback
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={4}>
+<MDXPSideLayout showSlideNum={false} split={5}>
 
 ## Automatic
 
 Next.js calculates that a page like this,
-can be rendered at build time.
+can be rendered at build time, because:
+
+- No `getInitialProps`
+- No `getServerSideProps`
 
 The page can still use client side JavaScript to fetch
 more data and update some of its elements.
 
-`getInitialProps`, here or, in `_app`, disables this behavior.
+`getInitialProps` in `_app`, disables this behavior, for all pages!
 
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
@@ -758,8 +945,7 @@ which can be used as a standalone application, without a Node.js server.
 - `next/image` and `next/script`
 - Testing with `rtl`, `ts-mockito`, `MSW`, and friends.
 - Authentication patterns
-- MDX support
-- 3rd party: `next-runtime`, `next-connect`
+- 3rd party: MDX, `next-runtime`, `next-connect`
 - React 18 and Server Components Preview
 - Incremental Static Regeneration, on detail
 - Using React Dev Tools
