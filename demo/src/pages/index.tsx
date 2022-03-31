@@ -73,7 +73,7 @@ export const Home = () => {
         </Notice>
 
         <p>
-          The source code for this repository can be found{" "}
+          The source code for this project can be found{" "}
           <a href="" target="_blank" rel="noopener noreferrer">
             here
           </a>
