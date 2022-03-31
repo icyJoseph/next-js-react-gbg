@@ -11,7 +11,8 @@
     "clean:web": "rimraf dist/web/*",
     "clean:onepage": "rimraf dist/onepage/*",
     "clean:pdf": "rimraf dist/*.pdf",
-    "analyze:web": "webpack-bundle-analyzer dist/web/stats.json"
+    "analyze:web": "webpack-bundle-analyzer dist/web/stats.json",
+    "deploy":"surge -p ./dist/web --domain https://windy-fold.surge.sh"
   },
   "browserslist": [
     "> 1%",
