@@ -23,7 +23,7 @@ export async function capture(req: NextApiRequest, res: NextApiResponse) {
     const success = await catchPokemon(id);
 
     const { pokemonDb } = result;
-    const current = pokemonDb.at(id);
+    const current = pokemonDb.charAt(id);
     const value = current === "x" ? 0 : Number(current);
 
     const update = success ? Math.min(9, value + 1) : value;
