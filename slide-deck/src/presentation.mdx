@@ -20,20 +20,6 @@ We should be critical of every dependency we use:
 
 > A JavaScript framework is created every X minutes
 
-<Note>
-We are familiar with the joke, "a JavaScript framework is born every minute".
-
-If you are a React Developer, there's a chance that you learned to use React through, Create React App (CRA).
-
-In my case, I need to always know all the little details of how something works,
-so I had initially started out with Webpack, in order to understand that my code,
-written in modern JavaScript is compiled by Babel, and that it was bundled by Webpack.
-
-However, once I found myself repeating the same configuration over and over,
-I followed the crowd, and started to use Create React App.
-
-</Note>
-
 ---
 
 ## Looking Back
@@ -46,27 +32,6 @@ I followed the crowd, and started to use Create React App.
   - This is why React makes no assumptions about where it runs
 
 > How should a production React App look like?
-
-<Note>
-Let us remember that, there was a time when people were unsure about using 
-Create React App for production applications.
-
-Many saw CRA as an educational tool, and nothing more.
-
-Let us **also** remember that, although, building entire applications
-using React was the end goal, initially, the adoption plan for React was
-to gradually transform parts of your UI to use React.
-
-How should a production React App look like? Most people didn't know at the time.
-
-Naturally, if you have spend time using Create React App,
-your own Webpack, or whatever other means to use React,
-seeing yet another one might be unsettling.
-
-I've heard people before saying, why?, I already got something working for me,
-or "pfft, ...a JavaScript framework is born every minute"
-
-</Note>
 
 ---
 
@@ -91,23 +56,6 @@ or "pfft, ...a JavaScript framework is born every minute"
   - Build blazing fast, modern apps and websites with React
 
 </Block>
-
-<Note>
-If we think of React as the Linux Kernel, then,
-CRA, your own Webpack, Parcel, Vite, Next.js, 
-are all Distributions.
-
-For Svelte for example, there's Svelte-Kit.
-
-Still, why do we have so many?
-
-Honestly, I don't really know, but I do see that
-each aims at solving a particular issue, and whether
-that issue is relevant anymore, is always up for debate.
-
-The Fear Of Missing Out and the Sunk Cost falacy
-
-</Note>
 
 ---
 
@@ -168,24 +116,6 @@ We could say it is a Full Stack Web SDK, based on React.
 - Server, Client bundle separation
 - `fetch` polyfill for server (and client)
 
-<Note>
-Learning to use Next.js, I think, 
-is a good next step for front end developers,
-because it is an intuitive way to learn 
-to use Node.js on the back end, 
-and to learn a full application stack, 
-which is more valuable than just knowing how to use a framework.
-
-It is a great first step into learning how to architect
-an application beyond the views, and rather learn how
-to deliver a value proposition end to end.
-
-In this presentation I want to cover many topics,
-for most I cannot do a full deep dive,
-but I still want readers to know about as many as possible.
-
-</Note>
-
 ---
 
 ## Even more features
@@ -227,18 +157,6 @@ must match the **frame rendered by the server**.
 
 > Suspense in React 18 improves how this is done, by breaking
 > down your app into smaller independent units.
-
-<Note>
-The same code runs on the server, and on the client.
-
-The Server generates the starter HTML, sends it to the client.
-The Client in turn goes through a process called Hydration,
-where instead of creating a DOM from zero,
-the Client uses the starter HTML to attach event listeners.
-
-React 18 has a game changing proposal on this regard
-
-</Note>
 
 ---
 
@@ -326,19 +244,6 @@ useEffect(() => {
   - Refreshing the window takes care of most
 - [Memory leak #35526](https://github.com/vercel/next.js/discussions/35526)
 
-<Note>
-Another way to look at this: You deploy your Create React App,
-and observe your error monitoring tool (which I hope you have set up),
-and if you don't see anything wrong for a couple of hours, you call it a day.
-
-When there's a server involved, it might take up to a
-week before things start to go wrong.
-
-Open connections, promises that are not resolved,
-timers that keep on running, etc., are common memory leaks.
-
-</Note>
-
 ---
 
 ## Time To Visible / Time To Interactive
@@ -352,16 +257,6 @@ timers that keep on running, etc., are common memory leaks.
 
 > React 18 has mitigations
 
-<Note>
-People don't generally click within the first second of page load.
-
-React 18 aims to fix this by streaming HTML down to the client, and
-prioritizing parts of the UI that the user wants to interact with.
-
-The `getServerSideProps` method sort of breaks this rule, partially.
-
-</Note>
-
 ---
 
 ## Divergent HTML
@@ -373,21 +268,6 @@ Happens when you rely on timing, randomness, or have unguarded access to the DOM
 If you can't design it away, hide those divergent parts behind client side activated flags.
 
 > React warns about this
-
-<Note>
-
-If the server side generated HTML, is not identical to
-the client side HTML, bugs will occur.
-React will warn you about this (with those warnings that are actually JavaScript Errors).
-
-This can happen because you rely on timing, randomness,
-or you have unguarded access to the DOM that fails, but does not crash the SSR process.
-
-You have to design your site, so that this is not a problem.
-Use placeholders, and combine hide those divergent parts
-behind client side activated flags.
-
-</Note>
 
 ---
 
@@ -443,23 +323,6 @@ return clientSecond === serverSecond ? (
 ### Wix.com
 
 ![Wix Time To Visible with SSR](./assets/wix_ttv_with_ssr.png)
-
-<Note>
-Like most things in life, it takes effort to get things right.
-
-Accidental complexity creeps quickly, as you have access
-to more tools and abilities. Consider the built in
-complexity of your product, how can you actually
-deliver your value proposition through SSR?
-
-Unit tests, and Eslint, can help out with most of the above.
-
-Proposed plugin, https://github.com/kopiro/eslint-plugin-ssr-friendly
-
-You need to learn to use Node Inspect and
-Diagnostics for performance measurement. https://nodejs.org/en/docs/guides/diagnostics-flamegraph/
-
-</Note>
 
 ---
 
@@ -1442,28 +1305,3 @@ Uses `_middleware` to control `app-cookie`.
 - Ever growing community
 - Constant updates, with fixes and new features
 - A good place to deploy, Vercel
-
-<Note>
-Throughout this document, I've almost not talked about 
-React itself, and that's because as far as Next.js 
-is concerned, React is a means to an end.
-
-Next.js understands that React is really good at
-its responsibility of rendering UI to the DOM.
-
-From that starting point, Next.js builds data
-fetching tools, server side lambdas, a solid router,
-and the ability to optimize loading times as much as possible.
-
-A good place to start deploying with Next.js apps is Vercel.
-
-> There's other solutions out there, like Gastby,
-> and Remix, however, I don't think doing a versus
-> kind of talk is very productive.
-
-A provoking thought to wrap up. With everything
-I've showed you, does it ever make sense to compare
-Angular to React anymore? Wouldn't it make more sense
-to pit Angular against Next.js?
-
-</Note>
