@@ -74,9 +74,13 @@ export const PokeCollection = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps<{
+type CollectionProps = {
   collection: Array<{ value: number; id: number }>;
-}> = async (ctx) => {
+};
+
+export const getServerSideProps: GetServerSideProps<CollectionProps> = async (
+  ctx
+) => {
   const token = ctx.req.cookies[USER_TOKEN];
 
   const data = await verifyUserToken(token);
