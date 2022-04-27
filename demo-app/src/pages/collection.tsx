@@ -87,7 +87,7 @@ export const getServerSideProps: GetServerSideProps<CollectionProps> = async (
 
   // if ("status" in data)
   //   return { redirect: { destination: "/", permanent: false } };
-  if ("status" in data) return { notFound: true };
+  if ("status" in data) return { props: { collection: [] } };
 
   const collection = data.pokemonDb
     .split("")
