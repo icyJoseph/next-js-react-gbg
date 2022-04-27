@@ -22,7 +22,10 @@ export async function middleware(req: NextRequest) {
       onGuarded: (token) => {
         const response = NextResponse.next();
 
-        response.cookie(USER_TOKEN, token, { httpOnly: true });
+        response.cookie(USER_TOKEN, token, {
+          httpOnly: true,
+          maxAge: 2592000 * 12,
+        });
 
         return response;
       },

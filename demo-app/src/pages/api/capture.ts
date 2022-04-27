@@ -34,7 +34,10 @@ export async function capture(req: NextApiRequest, res: NextApiResponse) {
 
     const newCookie = await createUserToken(updatedDb, result.jti);
 
-    res.setHeader("set-cookie", `${USER_TOKEN}=${newCookie}; Path=/; HttpOnly`);
+    res.setHeader(
+      "set-cookie",
+      `${USER_TOKEN}=${newCookie}; Max-Age=${2592000 * 12};Path=/; HttpOnly`
+    );
 
     return res.status(200).json({ id, success });
   } catch (e) {
