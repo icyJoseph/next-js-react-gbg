@@ -927,7 +927,8 @@ can be rendered at build time, because:
 The page can still use client side JavaScript to fetch
 more data and update some of its elements.
 
-`getInitialProps` in `_app`, disables this behavior, for all pages!
+`getInitialProps` in `_app`, disables this behavior!
+Except for pages with `getStaticProps`.
 
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
