@@ -16,10 +16,10 @@ type PokeCallbacks = {
   onCapture: (pk: Pokemon) => void;
 };
 
-const pokemonInitial = { x: "110vw", y: "calc(10vh - 3rem)" };
+const pokemonInitial = { x: "110vw", y: "10vh" };
 const pokemonReady = {
   x: "calc(80vw - 240px - 16px)",
-  y: "calc(10vh - 3rem)",
+  y: "10vh",
   opacity: 1,
 };
 

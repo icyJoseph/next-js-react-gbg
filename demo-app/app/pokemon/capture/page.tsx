@@ -10,8 +10,8 @@ import { WildPokemon } from "components/WildPokemon";
 import capture from "design-system/Capture.module.css";
 import type { Pokemon, Status } from "types";
 
-const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 };
-const pokeBallReady = { x: 0, y: "calc(80vh - 3rem)", scale: 1 };
+const pokeBallInitial = { x: 0, y: "110vh", scale: 1 };
+const pokeBallReady = { x: 0, y: "80vh", scale: 1 };
 
 const animatePokeBall = (
   controls: AnimationControls,
@@ -77,8 +77,7 @@ const Capture = () => {
 
     // TODO: Document Magic Numbers
     const dx = imageRef.current.width / 2 + ball.width / 2 + 16;
-    const dy =
-      pokemon.top + imageRef.current.height / 2 - ball.height / 2 - 3 * 16;
+    const dy = pokemon.top + imageRef.current.height / 2 - ball.height / 2;
 
     try {
       await animatePokeBall(controls, { dx, dy });

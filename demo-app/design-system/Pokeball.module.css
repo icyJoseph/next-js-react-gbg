@@ -1,4 +1,4 @@
-/* @keyframes shake {
+@keyframes shake {
   0% {
     transform: translate(0, 0) rotate(0);
   }
@@ -19,16 +19,16 @@
   }
 }
 
-.icon.trying {
+.trying {
   animation-duration: 1.25s;
   animation-iteration-count: infinite;
   animation-name: shake;
   animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
 
-.icon.trying::before {
+.trying::before {
   color: hotpink;
-} */
+}
 
 .wrapper {
   position: absolute;

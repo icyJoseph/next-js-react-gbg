@@ -22,7 +22,11 @@ export const PokeBall = forwardRef<HTMLButtonElement, PokeBallProps>(
         initial={initial}
         onClick={onClick}
       >
-        <i className={`nes-pokeball ${status}`} />
+        <i
+          className={`nes-pokeball ${
+            status === "trying" ? pokeball.trying : ""
+          }`.trim()}
+        />
       </motion.button>
     );
   }
