@@ -4,8 +4,10 @@ const nextConfig = {
   images: {
     domains: ["raw.githubusercontent.com"],
   },
-  compiler: {
-    styledComponents: true,
+  experimental: {
+    appDir: true,
+    allowMiddlewareResponseBody: true,
+    enableUndici: true,
   },
 };
 

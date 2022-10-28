@@ -1,0 +1,8 @@
+.capture {
+  border-color: rgba(0, 0, 0);
+  border-style: solid;
+}
+
+.capture > img {
+  image-rendering: pixelated;
+}
