@@ -3,6 +3,8 @@ import { fetchPokemon } from "lib/pokemon";
 
 const initial = [1, 4, 7];
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   return initial.map((id) => ({
     id: `${id}`,

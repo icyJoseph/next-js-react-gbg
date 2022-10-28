@@ -2,12 +2,16 @@
 
 import { useMemo, useState } from "react";
 
+import Link from "next/link";
+
 import { PokeArticle } from "components/PokeArticle";
 import app from "design-system/App.module.css";
 import collectionStyle from "design-system/Collection.module.css";
 import group from "design-system/Group.module.css";
 
 const ITEMS_PER_PAGE = 6;
+
+export const dynamic = "force-dynamic";
 
 const getAriaProps = ({ page, index }: { page: number; index: number }) =>
   ({
@@ -33,6 +37,19 @@ export const Collection = ({
       })),
     [totalPages]
   );
+
+  if (collection.length === 0) {
+    return (
+      <section className={app.section}>
+        <h1>Empty Collection</h1>
+
+        <p>
+          You collection is empty! Try to{" "}
+          <Link href="/pokemon/capture">capture</Link> some Pokémon!
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className={app.section}>

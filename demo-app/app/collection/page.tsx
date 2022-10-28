@@ -1,19 +1,17 @@
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 import { Collection } from "components/Collection";
 import { USER_TOKEN, verifyUserToken } from "lib/token";
 
-type CollectionProps = {
-  collection: Array<{ value: number; id: number }>;
-};
+type Collection = Array<{ value: number; id: number }>;
 
-export const getCollection = async (): Promise<CollectionProps> => {
-  const nextCookies = cookies();
-  const token = nextCookies.get(USER_TOKEN);
+export const dynamic = "force-dynamic";
 
+export const getCollection = async (token: string): Promise<Collection> => {
   const data = await verifyUserToken(token);
 
-  if ("status" in data) return { collection: [] };
+  if ("status" in data) return [];
 
   const collection = data.pokemonDb
     .split("")
@@ -22,11 +20,18 @@ export const getCollection = async (): Promise<CollectionProps> => {
     })
     .filter(({ value }) => !Number.isNaN(value));
 
-  return { collection };
+  return collection;
 };
 
 export const PokeCollection = async () => {
-  const { collection } = await getCollection();
+  const nextCookies = cookies();
+  const token = nextCookies.get(USER_TOKEN);
+
+  if (!token) {
+    return redirect("/");
+  }
+
+  const collection = await getCollection(token);
 
   return <Collection collection={collection}></Collection>;
 };
