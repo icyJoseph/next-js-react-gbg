@@ -25,6 +25,7 @@ export async function middleware(req: NextRequest) {
         response.cookies.set(USER_TOKEN, token, {
           httpOnly: true,
           maxAge: 2592000 * 12,
+          sameSite: "lax",
         });
 
         return response;
@@ -34,8 +35,6 @@ export async function middleware(req: NextRequest) {
 
     return result;
   } catch (e) {
-    console.log(e);
-
     return NextResponse.json({
       status: 500,
       statusText: "Internal Server Error",
