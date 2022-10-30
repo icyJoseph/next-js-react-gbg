@@ -11,9 +11,17 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <head>
+        <meta charSet="UTF-8" />
+        <meta
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport"
+        />
+
         <link
           href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=block"
           rel="stylesheet"
+          /* @ts-ignore precedence */
+          precedence="default"
         />
       </head>
 
