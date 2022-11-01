@@ -6,8 +6,6 @@ import { USER_TOKEN, verifyUserToken } from "lib/token";
 
 type Collection = Array<{ value: number; id: number }>;
 
-export const dynamic = "force-dynamic";
-
 export const getCollection = async (token: string): Promise<Collection> => {
   const data = await verifyUserToken(token);
 
