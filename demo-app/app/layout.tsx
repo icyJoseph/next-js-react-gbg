@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 
 import { Navigation } from "components/Navigation";
 import app from "design-system/App.module.css";
-import navigation from "design-system/Navigation.module.css";
 
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -28,10 +27,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       <body>
         <div id="__next">
           <header className={app.header}>
-            <Navigation
-              navClassName={navigation.navigation}
-              listClassName={navigation.navigationList}
-            />
+            <Navigation />
           </header>
 
           <main className={app.content}>{children}</main>

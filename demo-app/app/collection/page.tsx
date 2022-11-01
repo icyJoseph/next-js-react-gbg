@@ -25,7 +25,7 @@ export const getCollection = async (token: string): Promise<Collection> => {
 
 export const PokeCollection = async () => {
   const nextCookies = cookies();
-  const token = nextCookies.get(USER_TOKEN);
+  const token = nextCookies.get(USER_TOKEN)?.value;
 
   if (!token) {
     return redirect("/");

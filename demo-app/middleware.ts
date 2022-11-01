@@ -18,7 +18,7 @@ export async function middleware(req: NextRequest) {
 
   try {
     const result = await guardUserToken({
-      token: req.cookies.get(USER_TOKEN),
+      token: req.cookies.get(USER_TOKEN)?.value,
       onGuarded: (token) => {
         const response = NextResponse.next();
 

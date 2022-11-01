@@ -3,23 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// import navigation from "design-system/Navigation.module.css";
+import navigation from "design-system/Navigation.module.css";
 
 const getAnchorClassName = (isActive: boolean) =>
   `nes-text ${isActive ? "is-success" : ""}`.trim();
 
-export const Navigation = ({
-  navClassName,
-  listClassName,
-}: {
-  navClassName: string;
-  listClassName: string;
-}) => {
+export const Navigation = () => {
   const pathname = usePathname();
 
   return (
-    <nav className={navClassName}>
-      <ul className={listClassName}>
+    <nav className={navigation.navigation}>
+      <ul className={navigation.navigationList}>
         <li>
           <Link href="/" className={getAnchorClassName(pathname === "/")}>
             Home
@@ -37,6 +31,7 @@ export const Navigation = ({
           <Link
             href="/collection"
             className={getAnchorClassName(pathname === "/collection")}
+            shallow={false}
           >
             Collection
           </Link>
