@@ -41,3 +41,7 @@ main {
 .capitalize {
   text-transform: capitalize;
 }
+
+[data-nextjs-scroll-focus-boundary] {
+  display: contents;
+}
