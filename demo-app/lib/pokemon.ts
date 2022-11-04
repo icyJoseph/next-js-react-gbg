@@ -22,16 +22,13 @@ export const catchPokemon = async (id: number | string) => {
 };
 
 export const fetchPokemon = async (id: number | string) => {
-  console.log("Fetching pokemon:", id);
   const [specie, poke] = await Promise.all([
     fetch(`${specieEP}/${id}`),
     fetch(`${pokeEp}/${id}`),
   ]);
 
   const specieData = await specie.json();
-  console.log("Got JSON for specie");
   const pokeData = await poke.json();
-  console.log("Got JSON for pokeData");
 
   const data = {
     id: pokeData?.id,
@@ -47,8 +44,6 @@ export const fetchPokemon = async (id: number | string) => {
   };
 
   assert(data, Pokemon);
-
-  console.log("Done asserting pokemon data shape");
 
   return data;
 };
