@@ -8,6 +8,90 @@ The React Framework for Production
 
 ---
 
+## How did we get here?
+
+- We used to write plain HTML, bare metal JS and CSS
+
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '55ch', p: 0, mb:2 , '& > pre': { p: 1 }}}>
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>My Website</title>
+    <link href="/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"><!-- Your HTML structure --></div>
+    <script src="/index.js"></script>
+  </body>
+</html>
+```
+
+</Card>
+
+---
+
+## How did we get here?
+
+- Today we use JSX, typed code, which is compiled and bundled, CSS frameworks are a thing
+
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '55ch', p: 0, mb:2 , '& > pre': { p: 1 }}}>
+
+```tsx
+import type { ComponentProps } from "react";
+import { createRoot } from "react-dom/client";
+import "styles/global.css";
+
+const rootElement = document.getElementById("root");
+const root = createRoot(rootElement);
+
+const App = ({ children, ...rest }: ComponentProps<"div">) => (
+  <div {...rest}>{children}</div>
+);
+
+root.render(<App />);
+```
+
+</Card>
+
+---
+
+## Data driven apps
+
+- Applications are data-driven in the sense that, changes to data, trigger updates through out the application.
+
+<Card sx={{width: '80%', minWidth:'300px', maxWidth: '55ch', textAlign: 'center', p: 0, mb:2 , '& > pre': { p: 3 }}}>
+
+```
+UI = fn(state, props, context)
+```
+
+</Card>
+
+---
+
+## ES5, Babel, Webpack, TypeScript and You
+
+- ECMAScript: ES`<version>`
+  - Actual name of JavaScript
+  - Proposals go through 5 stages
+- Babel
+  - You write modern JavaScript, we make sure it runs in IE, or any target you want
+- Webpack
+  - You write your code as modules, we bundle it, and can even break into chunks
+  - Also does "tree-shaking"
+- TypeScript
+  - Superset of JavaScript to make sure your code is type-safe, for the most part
+- ESLint, Prettier, and all the rest of config files in your project
+  - Exist to give you a better developer experience
+- Jest, vitest
+  - Unit test your JavaScript
+
+---
+
 ## Yet Another Framework...
 
 We should be critical of every dependency we use:
@@ -120,7 +204,7 @@ We could say it is a Full Stack Web SDK, based on React.
 
 ## Even more features
 
-- `_middleware`
+- `middleware`
 - SEO without assumptions
 - Static Site export, like `CRA`
 - `next/image`
@@ -330,13 +414,13 @@ return clientSecond === serverSecond ? (
 
 - Anatomy of a `Next.js` project
 - `_app` and `_document`
-- Layouts
+- Shared Layouts
 - SPA Routing
 - Dynamic Routes
 - API Routes
 - SSR Techniques
 - Code Elimination
-- `_middleware`
+- `middleware`
 - `next.config.js`
 
 ---
@@ -1154,14 +1238,11 @@ type GetStaticPathsResult<P extends ParsedUrlQuery = ParsedUrlQuery> = {
 
 ---
 
-<MDXPSideLayout showSlideNum={false} split={4}>
+<MDXPSideLayout showSlideNum={false} split={3}>
 
-## `_middleware`
-
-It's in Beta, since Next.js `12.0.9`
+## `middleware`
 
 - Code over configuration
-- Runs before all siblings in `pages`
 - Runs at the (Vercel\*) Edge
   - Zero cold start Functions
   - Geographically close to visitors
@@ -1176,7 +1257,7 @@ It's in Beta, since Next.js `12.0.9`
 <Card sx={{p: 0, '& > pre': { p: 1 }}}>
 
 ```ts
-// src/pages/_middleware.ts
+// src/middleware.ts
 import { NextRequest, NextResponse } from "next/server";
 
 export const middleware = (req: NextRequest) => {
@@ -1249,7 +1330,7 @@ However, you'll miss out on a bunch of features, include, but not limited to:
 - Image optimizations
 - API Routes
 - `ISR`
-- `_middleware`
+- `middleware`
 - `getServerSideProps`
 
 ---
@@ -1269,7 +1350,7 @@ However, you'll miss out on a bunch of features, include, but not limited to:
 ## Left out
 
 - Dynamic Imports
-- Middleware for `api` routes (not `_middleware`)
+- Middleware for `api` routes (not `middleware`)
 - `next/image` and `next/script`
 - Testing with `rtl`, `ts-mockito`, `MSW`, and friends.
 - Authentication patterns
@@ -1293,7 +1374,7 @@ However, you'll miss out on a bunch of features, include, but not limited to:
   - Capture
   - Wild encounter
 
-Uses `_middleware` to control `app-cookie`.
+Uses `middleware` to control `app-cookie`.
 
 ---
 
