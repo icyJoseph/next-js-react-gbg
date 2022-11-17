@@ -11,8 +11,6 @@ import group from "design-system/Group.module.css";
 
 const ITEMS_PER_PAGE = 6;
 
-export const dynamic = "force-dynamic";
-
 const getAriaProps = ({ page, index }: { page: number; index: number }) =>
   ({
     "aria-label":
