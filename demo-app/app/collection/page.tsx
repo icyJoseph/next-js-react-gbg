@@ -6,7 +6,7 @@ import { USER_TOKEN, verifyUserToken } from "lib/token";
 
 type Collection = Array<{ value: number; id: number }>;
 
-export const getCollection = async (token: string): Promise<Collection> => {
+const getCollection = async (token: string): Promise<Collection> => {
   const data = await verifyUserToken(token);
 
   if ("status" in data) return [];
@@ -21,8 +21,9 @@ export const getCollection = async (token: string): Promise<Collection> => {
   return collection;
 };
 
-export const PokeCollection = async () => {
+const PokeCollection = async () => {
   const nextCookies = cookies();
+
   const token = nextCookies.get(USER_TOKEN)?.value;
 
   if (!token) {
