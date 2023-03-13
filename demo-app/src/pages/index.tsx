@@ -3,6 +3,7 @@ import NextImage from "next/image";
 import Link from "next/link";
 
 import { Notice } from "components/Notice";
+import { VisuallyHidden } from "components/VisuallyHidden";
 import { SUPPORTED_POKEMON } from "lib/constants";
 
 export const Home = () => {
@@ -78,7 +79,10 @@ export const Home = () => {
 
       <section>
         <h2 id="about">
-          <a href="#about">#</a> About
+          <a href="#about">
+            # <VisuallyHidden>About this application</VisuallyHidden>
+          </a>{" "}
+          <span aria-label="hidden">About</span>
         </h2>
 
         <p>Poké Adventure was made to be used as a Next.js demonstration.</p>
@@ -110,7 +114,13 @@ export const Home = () => {
 
       <section>
         <h2 id="architecture">
-          <a href="#architecture">#</a> Architecture
+          <a href="#architecture">
+            #{" "}
+            <VisuallyHidden>
+              Architecture used in this application
+            </VisuallyHidden>
+          </a>{" "}
+          <span aria-label="hidden">Architecture</span>
         </h2>
         <h3>At Build time</h3>
         <p>
@@ -153,6 +163,7 @@ export const Home = () => {
             width="1148"
             height="851"
             alt="Project architecture - data flow"
+            style={{ width: "100%", height: "auto" }}
           />
         </figure>
       </section>
