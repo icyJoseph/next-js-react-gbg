@@ -16,15 +16,9 @@ export const Home = () => {
         <h1>Poké Adventure</h1>
 
         <p>
-          Try to capture Pokémon in{" "}
-          <Link href="/pokemon/capture">
-            <a>Capture</a>
-          </Link>
+          Try to capture Pokémon in <Link href="/pokemon/capture">Capture</Link>
           , and view your collection in{" "}
-          <Link href="/collection">
-            <a>Collection</a>
-          </Link>
-          .
+          <Link href="/collection">Collection</Link>.
         </p>
 
         <Notice>
@@ -51,10 +45,7 @@ export const Home = () => {
             {SUPPORTED_POKEMON} Pokémon
           </span>
           . However, you can view information for any Pokémon at{" "}
-          <Link href="/pokemon/1">
-            <a>/pokemon/[id]</a>
-          </Link>
-          .
+          <Link href="/pokemon/1">/pokemon/[id]</Link>.
         </p>
 
         <Notice>
@@ -93,24 +84,16 @@ export const Home = () => {
         <h3>Pages</h3>
         <ul className="nes-list is-circle">
           <li>
-            <Link href="/">
-              <a>Landing Page</a>
-            </Link>
+            <Link href="/">Landing Page</Link>
           </li>
           <li>
-            <Link href="/pokemon/4">
-              <a>Pokémon view</a>
-            </Link>
+            <Link href="/pokemon/4">Pokémon view</Link>
           </li>
           <li>
-            <Link href="/pokemon/capture">
-              <a>Pokémon Capture</a>
-            </Link>
+            <Link href="/pokemon/capture">Pokémon Capture</Link>
           </li>
           <li>
-            <Link href="/collection">
-              <a>Personal Collection</a>
-            </Link>
+            <Link href="/collection">Personal Collection</Link>
           </li>
         </ul>
 
@@ -161,7 +144,12 @@ export const Home = () => {
 
         <figure className="nes-container with-title">
           <figcaption className="title">Application Data Flow</figcaption>
-          <NextImage src="/architecture.png" width="1148" height="851" />
+          <NextImage
+            src="/architecture.png"
+            width="1148"
+            height="851"
+            alt="Project architecture - data flow"
+          />
         </figure>
       </section>
     </>

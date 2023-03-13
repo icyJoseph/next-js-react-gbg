@@ -49,7 +49,7 @@ export const createUserToken = (pokemonDb?: string, jti?: string) =>
     .sign(new TextEncoder().encode(JWT_SECRET_KEY));
 
 type GuardCookieProps<OnGuarded = unknown, OnPass = unknown> = {
-  token: string | undefined;
+  token: string | undefined | null;
   onGuarded: (token: string) => OnGuarded;
   onPassThrough: () => OnPass;
 };

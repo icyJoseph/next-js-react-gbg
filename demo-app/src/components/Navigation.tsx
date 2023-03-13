@@ -41,22 +41,24 @@ export const Navigation = () => {
     <StyledNav>
       <ul>
         <li>
-          <Link href="/">
-            <a className={getAnchorClassName(pathname === "/")}>Home</a>
+          <Link href="/" className={getAnchorClassName(pathname === "/")}>
+            Home
           </Link>
         </li>
         <li>
-          <Link href="/pokemon/capture">
-            <a className={getAnchorClassName(pathname === "/pokemon/capture")}>
-              Capture
-            </a>
+          <Link
+            href="/pokemon/capture"
+            className={getAnchorClassName(pathname === "/pokemon/capture")}
+          >
+            Capture
           </Link>
         </li>
         <li>
-          <Link href="/collection">
-            <a className={getAnchorClassName(pathname === "/collection")}>
-              Collection
-            </a>
+          <Link
+            href="/collection"
+            className={getAnchorClassName(pathname === "/collection")}
+          >
+            Collection
           </Link>
         </li>
       </ul>

@@ -2,10 +2,8 @@ import crypto from "crypto";
 
 import { assert } from "superstruct";
 
+import { pokeEp, specieEP } from "lib/constants";
 import { Pokemon } from "types";
-
-export const specieEP = "https://pokeapi.co/api/v2/pokemon-species";
-export const pokeEp = "https://pokeapi.co/api/v2/pokemon";
 
 export const catchPokemon = async (id: number | string) => {
   const specie = await fetch(`${specieEP}/${id}`);

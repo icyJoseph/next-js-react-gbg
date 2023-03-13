@@ -41,3 +41,6 @@ yarn-error.log*
 
 # decks-output
 dist
+
+# next bundle analyzer output
+analyze

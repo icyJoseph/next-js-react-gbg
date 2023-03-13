@@ -18,9 +18,7 @@ const SimplePokeCard = ({ pokemon, qty }: PokeCardProps) => {
         <h1 className="capitalize">{pokemon.name}</h1>
 
         <Link href={`/pokemon/${pokemon.id}`}>
-          <a>
-            <span className="nes-text is-primary">#{pokemon.id}</span>
-          </a>
+          <span className="nes-text is-primary">#{pokemon.id}</span>
         </Link>
       </header>
 

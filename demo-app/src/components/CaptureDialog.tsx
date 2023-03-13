@@ -46,10 +46,8 @@ export const CaptureDialog = ({
     )}
 
     <ButtonGroup gap="1rem">
-      <Link href={`/pokemon/${captured?.id}`}>
-        <a className="nes-btn is-primary">
-          <span className="capitalize">{captured?.name}</span>
-        </a>
+      <Link href={`/pokemon/${captured?.id}`} className="nes-btn is-primary">
+        <span className="capitalize">{captured?.name}</span>
       </Link>
 
       <button className="nes-btn is-error" onClick={onDismiss}>

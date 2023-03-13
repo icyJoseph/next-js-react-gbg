@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import type { GetServerSideProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
 
 import { ButtonGroup } from "components/ButtonGroup";
 import { CollectionGrid } from "components/CollectionGrid";
@@ -19,9 +20,11 @@ const getAriaProps = ({ page, index }: { page: number; index: number }) =>
     "aria-current": page === index ? "true" : "false",
   } as const);
 
-export const PokeCollection = ({
-  collection,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+type CollectionProps = {
+  collection: Array<{ value: number; id: number }>;
+};
+
+export const PokeCollection = ({ collection }: CollectionProps) => {
   const totalPages = Math.ceil(collection.length / ITEMS_PER_PAGE);
 
   const [page, setPage] = useState(0);
@@ -60,22 +63,29 @@ export const PokeCollection = ({
           ))}
         </ButtonGroup>
 
-        <CollectionGrid>
-          {collection
-            .slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
-            .map(({ value, id }) => (
-              <article key={id}>
-                <PokeArticle id={id} value={value} />
-              </article>
-            ))}
-        </CollectionGrid>
+        {collection.length === 0 ? (
+          <section>
+            <h1>Empty Collection</h1>
+
+            <p>
+              You collection is empty! Try to{" "}
+              <Link href="/pokemon/capture">capture</Link> some Pokémon!
+            </p>
+          </section>
+        ) : (
+          <CollectionGrid>
+            {collection
+              .slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
+              .map(({ value, id }) => (
+                <article key={id}>
+                  <PokeArticle id={id} value={value} />
+                </article>
+              ))}
+          </CollectionGrid>
+        )}
       </section>
     </>
   );
-};
-
-type CollectionProps = {
-  collection: Array<{ value: number; id: number }>;
 };
 
 export const getServerSideProps: GetServerSideProps<CollectionProps> = async (

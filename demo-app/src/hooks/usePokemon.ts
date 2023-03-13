@@ -1,7 +1,7 @@
 import { assert } from "superstruct";
 import useSWRImmutable from "swr/immutable";
 
-import { pokeEp } from "lib/pokemon";
+import { pokeEp } from "lib/constants";
 import { Pokemon } from "types";
 
 export type Poke = Omit<Pokemon, "captureRate">;

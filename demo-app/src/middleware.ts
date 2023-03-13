@@ -18,11 +18,11 @@ export async function middleware(req: NextRequest) {
 
   try {
     const result = await guardUserToken({
-      token: req.cookies[USER_TOKEN],
+      token: req.cookies.get(USER_TOKEN)?.value,
       onGuarded: (token) => {
         const response = NextResponse.next();
 
-        response.cookie(USER_TOKEN, token, {
+        response.cookies.set(USER_TOKEN, token, {
           httpOnly: true,
           maxAge: 2592000 * 12,
         });
