@@ -65,7 +65,11 @@ export const Home = () => {
 
         <p>
           The source code for this project can be found{" "}
-          <a href="" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/icyJoseph/next-js-react-gbg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             here
           </a>
           .
