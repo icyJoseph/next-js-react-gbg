@@ -71,7 +71,7 @@ export const Home = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            here
+            in this repository.
           </a>
           .
         </p>
