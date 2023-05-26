@@ -1,0 +1,23 @@
+.DialogOverlay {
+  background-color: rgb(0 0 0 / 0.5);
+  position: fixed;
+  inset: 0;
+}
+
+.DialogContent {
+  background-color: white;
+  border-color: rgb(0, 0, 0);
+  border-style: solid;
+  border-width: 4px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 450px;
+  max-height: 85vh;
+}
+
+.DialogContent:focus {
+  outline: none;
+}
