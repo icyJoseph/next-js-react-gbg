@@ -17,7 +17,7 @@ const UserJwtPayload = object({
  * Verifies the user's JWT token and returns the payload if
  * it's valid or a response if it's not.
  */
-export async function verifyUserToken(token: string | undefined) {
+export async function resolveUserToken(token: string | undefined) {
   if (!token) {
     return { status: 401, message: "Missing user token" };
   }

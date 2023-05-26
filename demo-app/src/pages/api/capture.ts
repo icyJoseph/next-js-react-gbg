@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { catchPokemon } from "lib/pokemon";
-import { createUserToken, USER_TOKEN, verifyUserToken } from "lib/token";
+import { createUserToken, USER_TOKEN, resolveUserToken } from "lib/token";
 
 export async function capture(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST")
@@ -14,7 +14,7 @@ export async function capture(req: NextApiRequest, res: NextApiResponse) {
 
   const token = req.cookies[USER_TOKEN];
 
-  const result = await verifyUserToken(token);
+  const result = await resolveUserToken(token);
 
   if ("status" in result)
     return res.status(result.status).json({ message: result.message });
