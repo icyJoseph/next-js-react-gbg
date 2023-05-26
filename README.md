@@ -21,3 +21,9 @@ Pokemon are stored on a cookie with this shape:
 - `x` means the pokemon has not been seen
 - `0` means, seen, but not captured,
 - `1`..`9`, means how many times it has been captured. After 9 of the same species, we stop counting.
+
+## Supporting Slide Deck
+
+You can find a supporting slide deck about Next.js at:
+
+- https://windy-fold.surge.sh
