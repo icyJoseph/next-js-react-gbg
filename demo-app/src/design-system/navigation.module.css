@@ -1,0 +1,30 @@
+.navigation {
+  height: 100%;
+  font-size: 0.8rem;
+}
+
+.navigation > ul {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  list-style: none;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.navigation > li {
+  flex: 1;
+}
+
+@media (min-width: 514px) {
+  .navigation {
+    font-size: 1rem;
+  }
+
+  .navigation > ul {
+    gap: 1rem;
+  }
+}

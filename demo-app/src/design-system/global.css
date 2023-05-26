@@ -1,0 +1,53 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  min-height: 100%;
+}
+
+main {
+  display: block;
+  overflow-y: auto;
+}
+
+code {
+  font-family: inherit;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
