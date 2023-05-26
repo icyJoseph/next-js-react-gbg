@@ -1,3 +1,21 @@
+.inner:global(.trying) {
+  animation: shake 1.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+}
+
+.inner:global(.trying)::before {
+  color: hotpink;
+}
+
+.wrapper {
+  position: absolute;
+  background: transparent;
+  border: none;
+}
+
+.wrapper:focus {
+  outline: none;
+}
+
 @keyframes shake {
   0% {
     transform: translate(0, 0) rotate(0);
@@ -17,22 +35,4 @@
   100% {
     transform: translate(0, 0) rotate(0);
   }
-}
-
-.inner.trying {
-  animation: shake 1.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
-}
-
-.inner.trying::before {
-  color: hotpink;
-}
-
-.wrapper {
-  position: absolute;
-  background: transparent;
-  border: none;
-}
-
-.wrapper:focus {
-  outline: none;
 }
