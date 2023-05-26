@@ -8,7 +8,7 @@ type PokeCardProps = {
   qty: number;
 };
 
-const SimplePokeCard = ({ pokemon, qty }: PokeCardProps) => {
+const Pokemon = ({ pokemon, qty }: PokeCardProps) => {
   const cn = "nes-container with-title";
   const caught = Boolean(qty);
 
@@ -48,5 +48,5 @@ export const PokeArticle = ({
 
   if (!data) return null;
 
-  return <SimplePokeCard pokemon={data} qty={value} />;
+  return <Pokemon pokemon={data} qty={value} />;
 };

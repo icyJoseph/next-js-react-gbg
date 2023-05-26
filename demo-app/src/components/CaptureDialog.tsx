@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import NextLegacyImage from "next/legacy/image";
+import Image from "next/image";
 import Link from "next/link";
 
 import { ButtonGroup } from "components/ButtonGroup";
@@ -26,7 +26,7 @@ export const CaptureDialog = ({
           </span>
           .
           {captured && (
-            <NextLegacyImage
+            <Image
               src={captured.sprites.frontDefault}
               width="180"
               height="180"

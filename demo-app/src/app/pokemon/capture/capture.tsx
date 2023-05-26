@@ -1,13 +1,13 @@
+"use client";
+
 import { useEffect, useRef, useState, useCallback } from "react";
 
 import { useAnimation, type AnimationControls } from "framer-motion";
-import type { NextPage } from "next";
-import Head from "next/head";
 
 import { CaptureDialog } from "components/CaptureDialog";
-import { Scene } from "components/CaptureScene";
 import { PokeBall } from "components/PokeBall";
 import { WildPokemon } from "components/WildPokemon";
+import capture from "design-system/capture.module.css";
 import type { Pokemon, Status } from "types";
 
 const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 };
@@ -39,7 +39,7 @@ const animatePokeBall = (
   ]);
 };
 
-const Capture: NextPage = () => {
+export const PokemonCapture = () => {
   const controls = useAnimation();
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -67,6 +67,14 @@ const Capture: NextPage = () => {
     controls.start(pokeBallReady);
   }, [status, controls]);
 
+  useEffect(() => {
+    if (status === "captured") {
+      document.title = "🎉🎉🎉 | Poké Adventure";
+    } else {
+      document.title = "Capture | Poké Adventure";
+    }
+  }, [status]);
+
   const handleClick = async () => {
     if (status !== "pending") return;
     if (!imageRef.current) return;
@@ -91,43 +99,29 @@ const Capture: NextPage = () => {
 
   if (status === "captured") {
     return (
-      <>
-        <Head>
-          <title>🎉🎉🎉 | Poké Adventure</title>
-        </Head>
-
-        <CaptureDialog
-          captured={captured}
-          onDismiss={() => setStatus("pending")}
-        />
-      </>
+      <CaptureDialog
+        captured={captured}
+        onDismiss={() => setStatus("pending")}
+      />
     );
   }
 
   return (
-    <>
-      <Head>
-        <title>Capture | Poké Adventure</title>
-      </Head>
+    <div className={capture.scene}>
+      <WildPokemon
+        status={status}
+        onCapture={onCapture}
+        onFailure={onFailure}
+        ref={imageRef}
+      />
 
-      <Scene>
-        <WildPokemon
-          status={status}
-          onCapture={onCapture}
-          onFailure={onFailure}
-          ref={imageRef}
-        />
-
-        <PokeBall
-          animate={controls}
-          initial={pokeBallInitial}
-          status={status}
-          onClick={handleClick}
-          ref={ballRef}
-        />
-      </Scene>
-    </>
+      <PokeBall
+        animate={controls}
+        initial={pokeBallInitial}
+        status={status}
+        onClick={handleClick}
+        ref={ballRef}
+      />
+    </div>
   );
 };
-
-export default Capture;

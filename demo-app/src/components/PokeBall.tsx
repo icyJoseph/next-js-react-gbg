@@ -1,50 +1,11 @@
+"use client";
+
 import { type ComponentPropsWithRef, forwardRef } from "react";
 
 import { motion, type AnimationControls } from "framer-motion";
-import styled, { keyframes } from "styled-components";
 
+import pokeBall from "design-system/pokeball.module.css";
 import type { Status } from "types";
-
-const shake = keyframes`
-0% {
-    transform: translate(0, 0) rotate(0);
-  }
-  20% {
-    transform: translate(-10px, 0) rotate(-20deg);
-  }
-  30% {
-    transform: translate(10px, 0) rotate(20deg);
-  }
-  50% {
-    transform: translate(-10px, 0) rotate(-10deg);
-  }
-  60% {
-    transform: translate(10px, 0) rotate(10deg);
-  }
-  100% {
-    transform: translate(0, 0) rotate(0);
-  }
-`;
-
-const StyledIcon = styled.i`
-  &.trying {
-    animation: ${shake} 1.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
-  }
-
-  &.trying::before {
-    color: hotpink;
-  }
-`;
-
-const StyledMotionButton = styled(motion.button)`
-  position: absolute;
-  background: transparent;
-  border: none;
-
-  &:focus {
-    outline: none;
-  }
-`;
 
 type PokeBallProps = {
   status: Status;
@@ -55,14 +16,15 @@ type PokeBallProps = {
 export const PokeBall = forwardRef<HTMLButtonElement, PokeBallProps>(
   function PokeBall({ status, animate, initial, onClick }, ref) {
     return (
-      <StyledMotionButton
+      <motion.button
+        className={pokeBall.wrapper}
         ref={ref}
         animate={animate}
         initial={initial}
         onClick={onClick}
       >
-        <StyledIcon className={`nes-pokeball ${status}`} />
-      </StyledMotionButton>
+        <i className={`nes-pokeball ${pokeBall.inner} ${status}`} />
+      </motion.button>
     );
   }
 );

@@ -1,9 +1,9 @@
 import { useEffect, forwardRef } from "react";
 
 import { motion, useAnimation } from "framer-motion";
-import styled from "styled-components";
 import { assert } from "superstruct";
 
+import capture from "design-system/capture.module.css";
 import { useWildPokemon } from "hooks/useWildPokemon";
 import { sleep } from "lib/sleep";
 import { Catch, Pokemon, Status } from "types";
@@ -14,13 +14,6 @@ type PokeCallbacks = {
   onFailure: () => void;
   onCapture: (pk: Pokemon) => void;
 };
-
-const StyledDiv = styled(motion.img)`
-  width: 240px;
-  height: 240px;
-  position: absolute;
-  image-rendering: pixelated;
-`;
 
 const pokemonInitial = { x: "110vw", y: "calc(10vh - 3rem)" };
 const pokemonReady = {
@@ -85,7 +78,8 @@ export const WildPokemon = forwardRef<HTMLImageElement, WildPokemonProps>(
     const src = pokemon.sprites.frontDefault;
 
     return (
-      <StyledDiv
+      <motion.img
+        className={capture.wildPokemon}
         src={src}
         alt={pokemon.name}
         ref={ref}

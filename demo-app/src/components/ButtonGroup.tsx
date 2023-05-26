@@ -1,4 +1,6 @@
-import { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithoutRef } from "react";
+
+import groupStyle from "design-system/button-group.module.css";
 
 type AllowedGroupElement = keyof Pick<
   JSX.IntrinsicElements,
@@ -12,9 +14,10 @@ export const ButtonGroup = <T extends AllowedGroupElement>({
   style,
   ...rest
 }: ComponentPropsWithoutRef<T> & ButtonGroupProps<T>) => {
-  const mergedStyle = { ...style, "--gap": gap || "0.5rem" };
+  const mergedStyle = { ...style, "--btn-gap": gap || "0.5rem" };
+  const className = `${rest.className || ""} ${groupStyle.btnGroup}`;
 
   const Tag = renderAs || "div";
 
-  return <Tag {...rest} style={mergedStyle} />;
+  return <Tag {...rest} className={className} style={mergedStyle} />;
 };

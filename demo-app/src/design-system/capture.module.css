@@ -21,3 +21,18 @@
 .DialogContent:focus {
   outline: none;
 }
+
+.scene {
+  min-height: 100%;
+  width: 80%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.wildPokemon {
+  width: 240px;
+  height: 240px;
+  position: absolute;
+  image-rendering: pixelated;
+}

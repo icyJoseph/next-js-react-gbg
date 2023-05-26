@@ -32,6 +32,9 @@ main {
   overflow-y: auto;
 }
 
+kbd,
+pre,
+samp,
 code {
   font-family: inherit;
 }
