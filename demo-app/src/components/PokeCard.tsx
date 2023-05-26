@@ -1,5 +1,6 @@
 import NextImage from "next/image";
 
+import { pressStart2P } from "design-system/font";
 import poke from "design-system/poke-card.module.css";
 import type { Poke } from "hooks/usePokemon";
 
@@ -24,14 +25,14 @@ export const PokeCard = ({ pokemon }: PokeCardProps) => (
       />
 
       <div>
-        <pre>
+        <pre className={pressStart2P.className}>
           {(pokemon.height * 0.1).toFixed(2)} m -{" "}
           {(pokemon.weight * 0.1).toFixed(2)} kg
         </pre>
       </div>
 
       <div>
-        <pre>{pokemon.description}</pre>
+        <pre className={pressStart2P.className}>{pokemon.description}</pre>
       </div>
     </section>
   </div>

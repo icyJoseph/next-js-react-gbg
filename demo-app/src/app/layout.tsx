@@ -2,15 +2,10 @@ import "nes.css/css/nes.min.css";
 import "design-system/global.css";
 
 import type { Metadata } from "next";
-import { Press_Start_2P } from "next/font/google";
 
 import { Navigation } from "components/Navigation";
 import appStyle from "design-system/app.module.css";
-
-const pressStart2P = Press_Start_2P({
-  subsets: ["latin"],
-  weight: "400",
-});
+import { pressStart2P } from "design-system/font";
 
 export const metadata: Metadata = {
   title: "Home | Poké Adventure",

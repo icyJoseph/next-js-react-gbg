@@ -3,6 +3,7 @@ import NextImage from "next/image";
 import Link from "next/link";
 
 import { Notice } from "components/Notice";
+import { pressStart2P } from "design-system/font";
 import { SUPPORTED_POKEMON } from "lib/constants";
 
 export const metadata: Metadata = {
@@ -139,8 +140,14 @@ const Home = () => {
 
         <p>
           Next.js application, built with{" "}
-          <code className="nes-text is-primary">next build</code> and activated
-          using <code className="nes-text is-primary">next start</code> command.
+          <code className={`nes-text is-primary ${pressStart2P.className}`}>
+            next build
+          </code>{" "}
+          and activated using{" "}
+          <code className={`nes-text is-primary ${pressStart2P.className}`}>
+            next start
+          </code>{" "}
+          command.
         </p>
 
         <p>
