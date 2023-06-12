@@ -11,15 +11,11 @@ export const metadata: Metadata = {
   title: "Collection | Poké Adventure",
 };
 
-export const dynamic = "force-dynamic";
-
 const getPokemonCollection = async (
   token: string | undefined
 ): Promise<CollectionProps> => {
   const data = await resolveUserToken(token);
 
-  // if ("status" in data)
-  //   return { redirect: { destination: "/", permanent: false } };
   if ("status" in data) return { collection: [] };
 
   const collection = data.pokemonDb
