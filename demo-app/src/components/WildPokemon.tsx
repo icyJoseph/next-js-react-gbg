@@ -1,19 +1,9 @@
 import { useEffect, forwardRef } from "react";
 
 import { motion, useAnimation } from "framer-motion";
-import { assert } from "superstruct";
 
 import capture from "design-system/capture.module.css";
-import { useWildPokemon } from "hooks/useWildPokemon";
-import { sleep } from "lib/sleep";
-import { Catch, Pokemon, Status } from "types";
-
-type StatusProps = { status: Status };
-
-type PokeCallbacks = {
-  onFailure: () => void;
-  onCapture: (pk: Pokemon) => void;
-};
+import { Pokemon, Status } from "types";
 
 const pokemonInitial = { x: "110vw", y: "calc(10vh - 3rem)" };
 const pokemonReady = {
@@ -22,12 +12,11 @@ const pokemonReady = {
   opacity: 1,
 };
 
-type WildPokemonProps = StatusProps & PokeCallbacks;
+type WildPokemonProps = { pokemon: Pokemon | null; status: Status };
 
 export const WildPokemon = forwardRef<HTMLImageElement, WildPokemonProps>(
-  function Pokemon({ status, onCapture, onFailure }, ref) {
+  function Pokemon({ pokemon, status }, ref) {
     const control = useAnimation();
-    const pokemon = useWildPokemon();
 
     useEffect(() => {
       if (status !== "trying") return;
@@ -37,43 +26,12 @@ export const WildPokemon = forwardRef<HTMLImageElement, WildPokemonProps>(
 
     useEffect(() => {
       if (!pokemon) return;
-
       if (status !== "pending") return;
 
       control.start(pokemonReady);
     }, [control, status, pokemon]);
 
-    useEffect(() => {
-      if (!pokemon) return;
-      if (status !== "trying") return;
-
-      const controller = new AbortController();
-
-      fetch("/api/capture", {
-        method: "POST",
-        body: JSON.stringify({ id: pokemon.id }),
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-      })
-        .then(async (res) => {
-          if (res.status !== 200) return onFailure();
-
-          await sleep(1250 * 4);
-
-          const data = await res.json();
-
-          assert(data, Catch);
-
-          return data.success ? onCapture(pokemon) : onFailure();
-        })
-        .catch(() => onFailure());
-
-      return () => {
-        controller.abort();
-      };
-    }, [status, pokemon, onCapture, onFailure]);
-
-    if (pokemon === null) return null;
+    if (!pokemon) return null;
 
     const src = pokemon.sprites.frontDefault;
 

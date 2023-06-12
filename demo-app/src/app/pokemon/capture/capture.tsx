@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback, useTransition } from "react";
+import { useEffect, useRef, useState, startTransition } from "react";
 
 import { useAnimation, type AnimationControls } from "framer-motion";
+import { assert } from "superstruct";
 
 import { CaptureDialog } from "components/CaptureDialog";
 import { PokeBall } from "components/PokeBall";
 import { WildPokemon } from "components/WildPokemon";
 import capture from "design-system/capture.module.css";
-import type { Pokemon, Status } from "types";
+import { RenderWithPokemon } from "hooks/useWildPokemon";
+import { sleep } from "lib/sleep";
+import { Catch, Pokemon, Status } from "types";
 
 const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 };
 const pokeBallReady = { x: 0, y: "calc(80vh - 3rem)", scale: 1 };
@@ -44,7 +47,6 @@ export const PokemonCapture = ({
 }: {
   updateCollection: VoidFunction;
 }) => {
-  const [isPending, startTransition] = useTransition();
   const controls = useAnimation();
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -52,19 +54,6 @@ export const PokemonCapture = ({
 
   const [status, setStatus] = useState<Status>("pending");
   const [captured, setCaptured] = useState<Pokemon | null>(null);
-
-  const onCapture = useCallback(
-    (pk: Pokemon) => {
-      setStatus("captured");
-      setCaptured(pk);
-      startTransition(() => {
-        updateCollection();
-      });
-    },
-    [updateCollection]
-  );
-
-  const onFailure = useCallback(() => setStatus("pending"), []);
 
   useEffect(() => {
     if (status !== "captured") {
@@ -86,7 +75,16 @@ export const PokemonCapture = ({
     }
   }, [status]);
 
-  const handleClick = async () => {
+  const controllerRef = useRef<AbortController>();
+
+  useEffect(() => {
+    return () => {
+      controllerRef.current?.abort();
+    };
+  }, []);
+
+  const handleClick = async (target: Pokemon | null) => {
+    if (!target) return;
     if (status !== "pending") return;
     if (!imageRef.current) return;
     if (!ballRef.current) return;
@@ -99,16 +97,45 @@ export const PokemonCapture = ({
     const dy =
       pokemon.top + imageRef.current.height / 2 - ball.height / 2 - 3 * 16;
 
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
     try {
       await animatePokeBall(controls, { dx, dy });
 
       setStatus("trying");
 
-      startTransition(() => {
-        updateCollection();
+      const response = await fetch("/api/capture", {
+        method: "POST",
+        body: JSON.stringify({ id: target.id }),
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
       });
-    } catch (e) {
-      onFailure();
+
+      // At this point the cookie has been mutated, refresh the collection
+      startTransition(() => updateCollection());
+
+      await sleep(1000 * 5);
+
+      if (response.status !== 200) {
+        throw new Error("Failed to capture");
+      }
+
+      const data = await response.json();
+
+      assert(data, Catch);
+
+      const nextStatus = data.success ? "captured" : "pending";
+
+      const nextCaptured = data.success ? target : null;
+
+      setStatus(nextStatus);
+
+      setCaptured(nextCaptured);
+    } catch (_reason) {
+      if (controller.signal.aborted) return;
+
+      setStatus("pending");
     }
   };
 
@@ -123,20 +150,21 @@ export const PokemonCapture = ({
 
   return (
     <div className={capture.scene}>
-      <WildPokemon
-        status={status}
-        onCapture={onCapture}
-        onFailure={onFailure}
-        ref={imageRef}
-      />
+      <RenderWithPokemon>
+        {({ pokemon }) => (
+          <>
+            <WildPokemon pokemon={pokemon} status={status} ref={imageRef} />
 
-      <PokeBall
-        animate={controls}
-        initial={pokeBallInitial}
-        status={status}
-        onClick={handleClick}
-        ref={ballRef}
-      />
+            <PokeBall
+              animate={controls}
+              initial={pokeBallInitial}
+              status={status}
+              onClick={() => handleClick(pokemon)}
+              ref={ballRef}
+            />
+          </>
+        )}
+      </RenderWithPokemon>
     </div>
   );
 };
