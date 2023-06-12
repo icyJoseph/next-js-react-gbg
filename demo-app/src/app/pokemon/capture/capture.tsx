@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useTransition } from "react";
 
 import { useAnimation, type AnimationControls } from "framer-motion";
 
@@ -39,7 +39,12 @@ const animatePokeBall = (
   ]);
 };
 
-export const PokemonCapture = () => {
+export const PokemonCapture = ({
+  updateCollection,
+}: {
+  updateCollection: VoidFunction;
+}) => {
+  const [isPending, startTransition] = useTransition();
   const controls = useAnimation();
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -48,10 +53,16 @@ export const PokemonCapture = () => {
   const [status, setStatus] = useState<Status>("pending");
   const [captured, setCaptured] = useState<Pokemon | null>(null);
 
-  const onCapture = useCallback((pk: Pokemon) => {
-    setStatus("captured");
-    setCaptured(pk);
-  }, []);
+  const onCapture = useCallback(
+    (pk: Pokemon) => {
+      setStatus("captured");
+      setCaptured(pk);
+      startTransition(() => {
+        updateCollection();
+      });
+    },
+    [updateCollection]
+  );
 
   const onFailure = useCallback(() => setStatus("pending"), []);
 
@@ -92,6 +103,10 @@ export const PokemonCapture = () => {
       await animatePokeBall(controls, { dx, dy });
 
       setStatus("trying");
+
+      startTransition(() => {
+        updateCollection();
+      });
     } catch (e) {
       onFailure();
     }

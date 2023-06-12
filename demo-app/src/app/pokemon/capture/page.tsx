@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { revalidatePath } from "next/cache";
 
 import { PokemonCapture } from "app/pokemon/capture/capture";
 
@@ -7,7 +8,11 @@ export const metadata: Metadata = {
 };
 
 const CapturePage = () => {
-  return <PokemonCapture />;
+  async function updateCollection() {
+    "use server";
+    revalidatePath("/collection");
+  }
+  return <PokemonCapture updateCollection={updateCollection} />;
 };
 
 export default CapturePage;
