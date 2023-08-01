@@ -1,18 +1,18 @@
-import Head from "next/head";
+import type { Metadata } from "next";
 import NextImage from "next/image";
 import Link from "next/link";
 
 import { Notice } from "components/Notice";
-import { VisuallyHidden } from "components/VisuallyHidden";
+import { pressStart2P } from "design-system/font";
 import { SUPPORTED_POKEMON } from "lib/constants";
 
-export const Home = () => {
+export const metadata: Metadata = {
+  title: "Home | Poké Adventure",
+};
+
+const Home = () => {
   return (
     <>
-      <Head>
-        <title>Home | Poké Adventure</title>
-      </Head>
-
       <section>
         <h1>Poké Adventure</h1>
 
@@ -71,7 +71,7 @@ export const Home = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            in this repository.
+            in this repository
           </a>
           .
         </p>
@@ -80,7 +80,7 @@ export const Home = () => {
       <section>
         <h2 id="about">
           <a href="#about">
-            # <VisuallyHidden>About this application</VisuallyHidden>
+            # <span className="sr-only">About this application</span>
           </a>{" "}
           <span aria-label="hidden">About</span>
         </h2>
@@ -116,9 +116,9 @@ export const Home = () => {
         <h2 id="architecture">
           <a href="#architecture">
             #{" "}
-            <VisuallyHidden>
+            <span className="sr-only">
               Architecture used in this application
-            </VisuallyHidden>
+            </span>
           </a>{" "}
           <span aria-label="hidden">Architecture</span>
         </h2>
@@ -140,8 +140,14 @@ export const Home = () => {
 
         <p>
           Next.js application, built with{" "}
-          <code className="nes-text is-primary">next build</code> and activated
-          using <code className="nes-text is-primary">next start</code> command.
+          <code className={`nes-text is-primary ${pressStart2P.className}`}>
+            next build
+          </code>{" "}
+          and activated using{" "}
+          <code className={`nes-text is-primary ${pressStart2P.className}`}>
+            next start
+          </code>{" "}
+          command.
         </p>
 
         <p>

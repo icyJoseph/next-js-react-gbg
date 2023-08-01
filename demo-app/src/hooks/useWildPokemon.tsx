@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 import { assert } from "superstruct";
 
@@ -17,7 +17,10 @@ export const useWildPokemon = () => {
 
         return setData(data);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        if (controller.signal.aborted) return;
+        console.error(e);
+      });
 
     return () => {
       controller.abort();
@@ -25,4 +28,13 @@ export const useWildPokemon = () => {
   }, []);
 
   return data;
+};
+
+type RenderWithPokemonProps = {
+  children: (props: { pokemon: Pokemon | null }) => ReactNode;
+};
+export const RenderWithPokemon = ({ children }: RenderWithPokemonProps) => {
+  const pokemon = useWildPokemon();
+
+  return <>{children({ pokemon })}</>;
 };

@@ -1,44 +1,18 @@
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
-import styled from "styled-components";
+import { usePathname } from "next/navigation";
 
-const StyledNav = styled.nav`
-  height: 100%;
-  font-size: 0.8rem;
-
-  & > ul {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    list-style: none;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  & > li {
-    flex: 1;
-  }
-
-  @media (min-width: 514px) {
-    font-size: 1rem;
-
-    & > ul {
-      gap: 1rem;
-    }
-  }
-`;
+import style from "design-system/navigation.module.css";
 
 const getAnchorClassName = (isActive: boolean) =>
   `nes-text ${isActive ? "is-success" : ""}`.trim();
 
 export const Navigation = () => {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
 
   return (
-    <StyledNav>
+    <nav className={style.navigation}>
       <ul>
         <li>
           <Link href="/" className={getAnchorClassName(pathname === "/")}>
@@ -62,6 +36,6 @@ export const Navigation = () => {
           </Link>
         </li>
       </ul>
-    </StyledNav>
+    </nav>
   );
 };

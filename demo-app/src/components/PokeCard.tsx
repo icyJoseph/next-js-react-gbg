@@ -1,35 +1,15 @@
 import NextImage from "next/image";
-import styled from "styled-components";
 
+import { pressStart2P } from "design-system/font";
+import poke from "design-system/poke-card.module.css";
 import type { Poke } from "hooks/usePokemon";
 
 type PokeCardProps = {
   pokemon: Poke;
 };
 
-const StyledDiv = styled.div`
-  display: grid;
-  place-items: center;
-  min-height: 100%;
-
-  & img {
-    image-rendering: pixelated;
-  }
-
-  & pre {
-    white-space: pre-line;
-  }
-
-  & > .nes-container {
-    width: 80%;
-    max-width: 514px;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-  }
-`;
-
 export const PokeCard = ({ pokemon }: PokeCardProps) => (
-  <StyledDiv className="max-width-wrapper">
+  <div className={poke.card}>
     <section className="nes-container with-title">
       <header className="title">
         <h1>{pokemon.name}</h1>
@@ -45,15 +25,15 @@ export const PokeCard = ({ pokemon }: PokeCardProps) => (
       />
 
       <div>
-        <pre>
+        <pre className={pressStart2P.className}>
           {(pokemon.height * 0.1).toFixed(2)} m -{" "}
           {(pokemon.weight * 0.1).toFixed(2)} kg
         </pre>
       </div>
 
       <div>
-        <pre>{pokemon.description}</pre>
+        <pre className={pressStart2P.className}>{pokemon.description}</pre>
       </div>
     </section>
-  </StyledDiv>
+  </div>
 );
