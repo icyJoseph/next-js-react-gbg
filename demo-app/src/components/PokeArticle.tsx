@@ -1,7 +1,9 @@
+"use client";
+
 import NextImage from "next/image";
 import Link from "next/link";
 
-import { usePokemon, type Poke } from "hooks/usePokemon";
+import { usePokemon, type Poke } from "../hooks/usePokemon";
 
 type PokeCardProps = {
   pokemon: Poke;

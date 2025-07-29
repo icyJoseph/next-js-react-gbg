@@ -1,12 +1,10 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 import { guardUserToken, USER_TOKEN } from "lib/token";
 
 const shouldExclude = (pathname: string) => {
   return (
     pathname.startsWith("/api") || //  exclude all API routes
-    pathname.startsWith("/static") || // exclude static files
     pathname.includes(".") // exclude all files in the public folder
   );
 };
@@ -34,7 +32,7 @@ export async function middleware(req: NextRequest) {
 
     return result;
   } catch (e) {
-    console.log(e);
+    console.log("Middleware Error", e);
 
     return new Response(null, {
       status: 500,

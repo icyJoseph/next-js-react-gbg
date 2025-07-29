@@ -31,7 +31,7 @@ export async function verifyUserToken(token: string | undefined) {
     assert(verified.payload, UserJwtPayload);
 
     return verified.payload;
-  } catch (err) {
+  } catch (_err) {
     return { status: 401, message: "Your token is invalid." };
   }
 }
@@ -71,7 +71,7 @@ export async function guardUserToken<OnGuarded = unknown, OnPass = unknown>({
     await jwtVerify(token, new TextEncoder().encode(JWT_SECRET_KEY));
 
     return onPassThrough();
-  } catch (e) {
+  } catch {
     // dirty cookie
     const token = await createUserToken();
     return onGuarded(token);

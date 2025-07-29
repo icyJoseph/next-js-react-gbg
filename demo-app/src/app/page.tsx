@@ -1,18 +1,18 @@
-import Head from "next/head";
+import type { Metadata } from "next";
 import NextImage from "next/image";
 import Link from "next/link";
 
-import { Notice } from "components/Notice";
-import { VisuallyHidden } from "components/VisuallyHidden";
-import { SUPPORTED_POKEMON } from "lib/constants";
+import { Notice } from "../components/Notice";
+import { VisuallyHidden } from "../components/VisuallyHidden";
+import { SUPPORTED_POKEMON } from "../lib/constants";
 
-export const Home = () => {
+export const metadata: Metadata = {
+  title: "Home | Poké Adventure",
+};
+
+export default function Home() {
   return (
     <>
-      <Head>
-        <title>Home | Poké Adventure</title>
-      </Head>
-
       <section>
         <h1>Poké Adventure</h1>
 
@@ -82,7 +82,7 @@ export const Home = () => {
           <a href="#about">
             # <VisuallyHidden>About this application</VisuallyHidden>
           </a>{" "}
-          <span aria-label="hidden">About</span>
+          <span aria-hidden>About</span>
         </h2>
 
         <p>Poké Adventure was made to be used as a Next.js demonstration.</p>
@@ -120,7 +120,7 @@ export const Home = () => {
               Architecture used in this application
             </VisuallyHidden>
           </a>{" "}
-          <span aria-label="hidden">Architecture</span>
+          <span aria-hidden>Architecture</span>
         </h2>
         <h3>At Build time</h3>
         <p>
@@ -169,6 +169,4 @@ export const Home = () => {
       </section>
     </>
   );
-};
-
-export default Home;
+}

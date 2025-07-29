@@ -1,3 +1,5 @@
+"use client";
+
 import "@reach/dialog/styles.css";
 
 import Dialog from "@reach/dialog";

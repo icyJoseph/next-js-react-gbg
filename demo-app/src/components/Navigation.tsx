@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import styled from "styled-components";
 
 const StyledNav = styled.nav`
@@ -35,7 +37,7 @@ const getAnchorClassName = (isActive: boolean) =>
   `nes-text ${isActive ? "is-success" : ""}`.trim();
 
 export const Navigation = () => {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
 
   return (
     <StyledNav>

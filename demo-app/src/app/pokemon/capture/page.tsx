@@ -1,20 +1,20 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+"use client";
 
-import { useAnimation, type AnimationControls } from "framer-motion";
-import type { NextPage } from "next";
-import Head from "next/head";
+import { useCallback, useEffect, useState, useRef } from "react";
 
-import { CaptureDialog } from "components/CaptureDialog";
-import { Scene } from "components/CaptureScene";
-import { PokeBall } from "components/PokeBall";
-import { WildPokemon } from "components/WildPokemon";
-import type { Pokemon, Status } from "types";
+import { useAnimation, type LegacyAnimationControls } from "framer-motion";
+
+import { CaptureDialog } from "../../../components/CaptureDialog";
+import { Scene } from "../../../components/CaptureScene";
+import { PokeBall } from "../../../components/PokeBall";
+import { WildPokemon } from "../../../components/WildPokemon";
+import type { Pokemon, Status } from "../../../types";
 
 const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 };
 const pokeBallReady = { x: 0, y: "calc(80vh - 3rem)", scale: 1 };
 
 const animatePokeBall = (
-  controls: AnimationControls,
+  controls: LegacyAnimationControls,
   { dx, dy }: { dx: number; dy: number }
 ) => {
   return Promise.all([
@@ -39,10 +39,10 @@ const animatePokeBall = (
   ]);
 };
 
-const Capture: NextPage = () => {
+export default function CapturePage() {
   const controls = useAnimation();
 
-  const imageRef = useRef<HTMLImageElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
   const ballRef = useRef<HTMLButtonElement>(null);
 
   const [status, setStatus] = useState<Status>("pending");
@@ -64,7 +64,14 @@ const Capture: NextPage = () => {
   useEffect(() => {
     if (status !== "pending") return;
 
-    controls.start(pokeBallReady);
+    const raf = requestAnimationFrame(() => {
+      controls.start(pokeBallReady);
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      controls.stop();
+    };
   }, [status, controls]);
 
   const handleClick = async () => {
@@ -76,58 +83,43 @@ const Capture: NextPage = () => {
     const ball = ballRef.current.getBoundingClientRect();
 
     // TODO: Document Magic Numbers
-    const dx = imageRef.current.width / 2 + ball.width / 2 + 16;
-    const dy =
-      pokemon.top + imageRef.current.height / 2 - ball.height / 2 - 3 * 16;
+    const dx = pokemon.width / 2 + ball.width / 2 + 16;
+    const dy = pokemon.top + pokemon.height / 2 - ball.height / 2 - 3 * 16;
 
     try {
       await animatePokeBall(controls, { dx, dy });
 
       setStatus("trying");
-    } catch (e) {
+    } catch {
       onFailure();
     }
   };
 
   if (status === "captured") {
     return (
-      <>
-        <Head>
-          <title>🎉🎉🎉 | Poké Adventure</title>
-        </Head>
-
-        <CaptureDialog
-          captured={captured}
-          onDismiss={() => setStatus("pending")}
-        />
-      </>
+      <CaptureDialog
+        captured={captured}
+        onDismiss={() => setStatus("pending")}
+      />
     );
   }
 
   return (
-    <>
-      <Head>
-        <title>Capture | Poké Adventure</title>
-      </Head>
+    <Scene>
+      <WildPokemon
+        status={status}
+        onCapture={onCapture}
+        onFailure={onFailure}
+        ref={imageRef}
+      />
 
-      <Scene>
-        <WildPokemon
-          status={status}
-          onCapture={onCapture}
-          onFailure={onFailure}
-          ref={imageRef}
-        />
-
-        <PokeBall
-          animate={controls}
-          initial={pokeBallInitial}
-          status={status}
-          onClick={handleClick}
-          ref={ballRef}
-        />
-      </Scene>
-    </>
+      <PokeBall
+        animate={controls}
+        initial={pokeBallInitial}
+        status={status}
+        onClick={handleClick}
+        ref={ballRef}
+      />
+    </Scene>
   );
-};
-
-export default Capture;
+}

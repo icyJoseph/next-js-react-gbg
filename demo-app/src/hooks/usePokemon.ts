@@ -6,7 +6,7 @@ import { Pokemon } from "types";
 
 export type Poke = Omit<Pokemon, "captureRate">;
 
-const fetcher = async (_: string, id: string | number): Promise<Poke> => {
+const fetcher = async (id: string | number): Promise<Poke> => {
   const res = await fetch(`${pokeEp}/${id}`);
 
   if (!res.ok) throw new Error("Failed to get pokemon");
@@ -28,11 +28,15 @@ const fetcher = async (_: string, id: string | number): Promise<Poke> => {
 
   assert(data, Pokemon);
 
-  const { captureRate, ...poke } = data;
+  const { captureRate: _captureRate, ...poke } = data;
 
   return poke;
 };
 
 export const usePokemon = (id: string | number) => {
-  return useSWRImmutable(["pokemon", id], fetcher);
+  console.log("usePokemon", id);
+  return useSWRImmutable(
+    ["pokemon", id],
+    ([_key, id]: [_key: string, id: string | number]) => fetcher(id)
+  );
 };

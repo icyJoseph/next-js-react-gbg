@@ -17,10 +17,13 @@ export const useWildPokemon = () => {
 
         return setData(data);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        if (controller.signal.aborted) return;
+        console.error(e);
+      });
 
     return () => {
-      controller.abort();
+      controller.abort("CleanUp Abort");
     };
   }, []);
 

@@ -1,6 +1,8 @@
-import { type ComponentPropsWithRef, forwardRef } from "react";
+"use client";
 
-import { motion, type AnimationControls } from "framer-motion";
+import type { ComponentPropsWithRef } from "react";
+
+import { motion, type LegacyAnimationControls } from "framer-motion";
 import styled, { keyframes } from "styled-components";
 
 import type { Status } from "types";
@@ -48,21 +50,25 @@ const StyledMotionButton = styled(motion.button)`
 
 type PokeBallProps = {
   status: Status;
-  animate: AnimationControls;
+  animate: LegacyAnimationControls;
   initial: Record<string, string | number>;
 } & ComponentPropsWithRef<"button">;
 
-export const PokeBall = forwardRef<HTMLButtonElement, PokeBallProps>(
-  function PokeBall({ status, animate, initial, onClick }, ref) {
-    return (
-      <StyledMotionButton
-        ref={ref}
-        animate={animate}
-        initial={initial}
-        onClick={onClick}
-      >
-        <StyledIcon className={`nes-pokeball ${status}`} />
-      </StyledMotionButton>
-    );
-  }
-);
+export const PokeBall = function PokeBall({
+  status,
+  animate,
+  initial,
+  onClick,
+  ref,
+}: PokeBallProps) {
+  return (
+    <StyledMotionButton
+      ref={ref}
+      animate={animate}
+      initial={initial}
+      onClick={onClick}
+    >
+      <StyledIcon className={`nes-pokeball ${status}`} />
+    </StyledMotionButton>
+  );
+};
