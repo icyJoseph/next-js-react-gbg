@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     const newCookie = await createUserToken(updatedDb, result.jti);
 
     const response = NextResponse.json({ id, success });
-    console.log("Hello");
+
     response.cookies.set({
       name: USER_TOKEN,
       value: newCookie,
@@ -53,8 +53,7 @@ export async function POST(request: NextRequest) {
     });
 
     return response;
-  } catch (e) {
-    console.log(e);
+  } catch {
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

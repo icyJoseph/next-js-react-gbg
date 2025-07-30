@@ -34,7 +34,6 @@ const fetcher = async (id: string | number): Promise<Poke> => {
 };
 
 export const usePokemon = (id: string | number) => {
-  console.log("usePokemon", id);
   return useSWRImmutable(
     ["pokemon", id],
     ([_key, id]: [_key: string, id: string | number]) => fetcher(id)

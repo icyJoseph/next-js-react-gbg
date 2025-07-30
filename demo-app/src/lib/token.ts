@@ -5,6 +5,10 @@ import { assert, string, number, object } from "superstruct";
 import { SUPPORTED_POKEMON } from "lib/constants";
 
 export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+
+if (typeof JWT_SECRET_KEY === "undefined") {
+  throw new Error("JWT_SECRET_KEY is undefined");
+}
 export const USER_TOKEN = "app-token";
 
 const UserJwtPayload = object({

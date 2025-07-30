@@ -18,14 +18,15 @@ export async function generateMetadata({
     return { title: "Pokemon Not Found | Poké Adventure" };
   }
 
-  try {
-    const pokemon = await fetchPokemon(idx);
-    return {
-      title: `${pokemon.name} | Poké Adventure`,
-    };
-  } catch {
+  const pokemon = await fetchPokemon(idx);
+
+  if (!pokemon) {
     return { title: "Pokemon Not Found | Poké Adventure" };
   }
+
+  return {
+    title: `${pokemon.name} | Poké Adventure`,
+  };
 }
 
 export default async function PokemonPage({ params }: PageProps) {
@@ -36,13 +37,11 @@ export default async function PokemonPage({ params }: PageProps) {
     notFound();
   }
 
-  try {
-    const pokemon = await fetchPokemon(idx);
-    return <PokeCard pokemon={pokemon} />;
-  } catch (e) {
-    console.log(e);
-    notFound();
-  }
+  const pokemon = await fetchPokemon(idx);
+
+  if (!pokemon) notFound();
+
+  return <PokeCard pokemon={pokemon} />;
 }
 
 // Generate static params for the initial Pokemon

@@ -41,7 +41,11 @@ export const fetchPokemon = async (id: number | string) => {
     description: specieData?.flavor_text_entries?.[0]?.flavor_text,
   };
 
-  assert(data, Pokemon);
+  try {
+    assert(data, Pokemon);
+  } catch {
+    return null;
+  }
 
   return data;
 };
