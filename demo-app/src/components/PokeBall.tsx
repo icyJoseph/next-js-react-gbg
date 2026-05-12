@@ -1,11 +1,13 @@
 "use client";
 
-import type { ComponentPropsWithRef } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 
-import { motion, type LegacyAnimationControls } from "framer-motion";
+import {
+  type LegacyAnimationControls,
+  motion,
+  useAnimation,
+} from "framer-motion";
 import styled, { keyframes } from "styled-components";
-
-import type { Status } from "types";
 
 const shake = keyframes`
 0% {
@@ -28,7 +30,7 @@ const shake = keyframes`
   }
 `;
 
-const StyledIcon = styled.i`
+const Animated = styled.i`
   &.trying {
     animation: ${shake} 1.25s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
   }
@@ -38,7 +40,7 @@ const StyledIcon = styled.i`
   }
 `;
 
-const StyledMotionButton = styled(motion.button)`
+const ThrowTrigger = styled(motion.button)`
   position: absolute;
   background: transparent;
   border: none;
@@ -48,27 +50,98 @@ const StyledMotionButton = styled(motion.button)`
   }
 `;
 
-type PokeBallProps = {
-  status: Status;
-  animate: LegacyAnimationControls;
-  initial: Record<string, string | number>;
-} & ComponentPropsWithRef<"button">;
+const pokeBallInitial = { x: 0, y: "calc(110vh - 3rem)", scale: 1 } as const;
+const pokeBallReady = { x: 0, y: "calc(80vh - 3rem)", scale: 1 } as const;
+
+const animatePokeBall = (
+  controls: LegacyAnimationControls,
+  { dx, dy }: { dx: number; dy: number }
+) => {
+  return Promise.all([
+    controls.start({
+      x: `calc(80vw - ${dx}px)`,
+      transition: { duration: 0.75 },
+    }),
+    controls.start({
+      y: dy,
+      transition: {
+        duration: 0.75,
+        type: "spring",
+        stiffness: 80,
+        damping: 10,
+        mass: 1,
+      },
+    }),
+    controls.start({
+      scale: 0.7,
+      transition: { duration: 0.75 },
+    }),
+  ]);
+};
 
 export const PokeBall = function PokeBall({
-  status,
-  animate,
-  initial,
-  onClick,
-  ref,
-}: PokeBallProps) {
+  target,
+  pending,
+}: {
+  target: RefObject<HTMLDivElement | null>;
+  pending: boolean;
+}) {
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const control = useAnimation();
+  // x-ref: https://github.com/facebook/react/issues/30368
+  // const { pending } = useFormStatus();
+
+  const [state, setState] = useState<"idle" | "thrown" | "waiting">("idle");
+
+  useEffect(() => {
+    if (state !== "idle") return;
+
+    const raf = requestAnimationFrame(() => {
+      control.start(pokeBallReady);
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      control.stop();
+    };
+  }, [control, state]);
+
+  useEffect(() => {
+    // ball was thrown and the form is not pending
+    if (state === "thrown" && pending) {
+      setState("waiting");
+    }
+
+    if (state === "waiting" && !pending) {
+      setState("idle");
+    }
+  }, [state, pending]);
+
+  const handleClick = async () => {
+    if (!buttonRef.current || pending) return;
+
+    if (!target.current) return;
+
+    const pokemon = target.current.getBoundingClientRect();
+    const ball = buttonRef.current.getBoundingClientRect();
+
+    const dx = pokemon.width / 2 + ball.width / 2 + 16;
+    const dy = pokemon.top + pokemon.height / 2 - ball.height / 2 - 3 * 16;
+
+    await animatePokeBall(control, { dx, dy });
+    setState("thrown");
+    buttonRef.current.form?.requestSubmit();
+  };
+
   return (
-    <StyledMotionButton
-      ref={ref}
-      animate={animate}
-      initial={initial}
-      onClick={onClick}
+    <ThrowTrigger
+      ref={buttonRef}
+      type="button"
+      initial={pokeBallInitial}
+      animate={control}
+      onClick={handleClick}
     >
-      <StyledIcon className={`nes-pokeball ${status}`} />
-    </StyledMotionButton>
+      <Animated className={`nes-pokeball ${pending ? "trying" : ""}`} />
+    </ThrowTrigger>
   );
 };

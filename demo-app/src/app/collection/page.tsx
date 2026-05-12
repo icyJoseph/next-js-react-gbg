@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { fetchPokemon } from "lib/pokemon";
+import { USER_TOKEN, verifyUserToken } from "lib/token";
+
 import { CollectionClient } from "./collection-client";
-import { USER_TOKEN, verifyUserToken } from "../../lib/token";
 
 export const metadata: Metadata = {
   title: "Collection | Poké Adventure",
@@ -31,5 +33,9 @@ async function getCollection() {
 export default async function CollectionPage() {
   const collection = await getCollection();
 
-  return <CollectionClient collection={collection} />;
+  const promises = collection.map(
+    ({ id, value }) => [id, value, fetchPokemon(id)] as const
+  );
+
+  return <CollectionClient collection={promises} />;
 }

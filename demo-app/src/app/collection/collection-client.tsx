@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 
 import Link from "next/link";
+
+import type { Pokemon } from "types";
 
 import { ButtonGroup } from "../../components/ButtonGroup";
 import { CollectionGrid } from "../../components/CollectionGrid";
@@ -20,7 +22,7 @@ const getAriaProps = ({ page, index }: { page: number; index: number }) =>
   } as const);
 
 type CollectionProps = {
-  collection: Array<{ value: number; id: number }>;
+  collection: Array<readonly [number, number, Promise<Pokemon | null>]>;
 };
 
 export function CollectionClient({ collection }: CollectionProps) {
@@ -66,9 +68,11 @@ export function CollectionClient({ collection }: CollectionProps) {
         <CollectionGrid>
           {collection
             .slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
-            .map(({ value, id }) => (
+            .map(([id, value, promise]) => (
               <article key={id}>
-                <PokeArticle id={id} value={value} />
+                <Suspense fallback={"Loading..."}>
+                  <PokeArticle id={id} value={value} promise={promise} />
+                </Suspense>
               </article>
             ))}
         </CollectionGrid>

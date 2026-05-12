@@ -9,7 +9,7 @@ const shouldExclude = (pathname: string) => {
   );
 };
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (shouldExclude(pathname)) return NextResponse.next();
@@ -32,7 +32,7 @@ export async function middleware(req: NextRequest) {
 
     return result;
   } catch (e) {
-    console.log("Middleware Error", e);
+    console.log("Proxy Error", e);
 
     return new Response(null, {
       status: 500,

@@ -1,39 +1,32 @@
+"use server";
+
 import { cookies } from "next/headers";
-import { type NextRequest, NextResponse } from "next/server";
 
-import { catchPokemon } from "../../../lib/pokemon";
-import {
-  createUserToken,
-  USER_TOKEN,
-  verifyUserToken,
-} from "../../../lib/token";
+import { catchPokemon } from "lib/pokemon";
+import { createUserToken, USER_TOKEN, verifyUserToken } from "lib/token";
 
-export async function POST(request: NextRequest) {
+export type CaptureState = { success: boolean };
+
+export async function capturePokemonAction(
+  _prev: boolean,
+  rawId: string | number
+): Promise<CaptureState> {
   try {
-    const { id } = await request.json();
+    const id = Number(rawId);
 
-    if (typeof id !== "number") {
-      return NextResponse.json({ message: "Bad Request" }, { status: 400 });
-    }
+    if (!Number.isFinite(id)) return { success: false };
 
     const cookieStore = await cookies();
     const token = cookieStore.get(USER_TOKEN)?.value;
 
     const result = await verifyUserToken(token);
-
-    if ("status" in result) {
-      return NextResponse.json(
-        { message: result.message },
-        { status: result.status }
-      );
-    }
+    if ("status" in result) return { success: false };
 
     const success = await catchPokemon(id);
 
     const { pokemonDb } = result;
     const current = pokemonDb.charAt(id);
     const value = current === "x" ? 0 : Number(current);
-
     const update = success ? Math.min(9, value + 1) : value;
 
     const start = pokemonDb.substring(0, id);
@@ -42,9 +35,7 @@ export async function POST(request: NextRequest) {
 
     const newCookie = await createUserToken(updatedDb, result.jti);
 
-    const response = NextResponse.json({ id, success });
-
-    response.cookies.set({
+    cookieStore.set({
       name: USER_TOKEN,
       value: newCookie,
       maxAge: 2592000 * 12,
@@ -52,11 +43,8 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
     });
 
-    return response;
+    return { success };
   } catch {
-    return NextResponse.json(
-      { message: "Internal Server Error" },
-      { status: 500 }
-    );
+    return { success: false };
   }
 }

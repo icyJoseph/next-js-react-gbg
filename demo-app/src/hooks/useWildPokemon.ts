@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { assert } from "superstruct";
 
@@ -8,6 +8,8 @@ export const useWildPokemon = () => {
   const [data, setData] = useState<null | Pokemon>(null);
 
   useEffect(() => {
+    if (data) return;
+
     const controller = new AbortController();
 
     fetch("/api/wild", { signal: controller.signal })
@@ -25,7 +27,11 @@ export const useWildPokemon = () => {
     return () => {
       controller.abort("CleanUp Abort");
     };
+  }, [data]);
+
+  const reset = useCallback(() => {
+    setData(null);
   }, []);
 
-  return data;
+  return [data, reset] as const;
 };

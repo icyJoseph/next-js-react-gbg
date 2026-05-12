@@ -1,9 +1,12 @@
 "use client";
 
+import { use } from "react";
+
 import NextImage from "next/image";
 import Link from "next/link";
 
-import { usePokemon, type Poke } from "../hooks/usePokemon";
+import type { Poke } from "hooks/usePokemon";
+import type { Pokemon } from "types";
 
 type PokeCardProps = {
   pokemon: Poke;
@@ -17,7 +20,7 @@ const SimplePokeCard = ({ pokemon, qty }: PokeCardProps) => {
   return (
     <section className={`${cn} ${!!caught ? "is-dark" : ""}`}>
       <header className="title">
-        <h1 className="capitalize">{pokemon.name}</h1>
+        <h3 className="capitalize">{pokemon.name}</h3>
 
         <Link href={`/pokemon/${pokemon.id}`}>
           <span className="nes-text is-primary">#{pokemon.id}</span>
@@ -38,17 +41,16 @@ const SimplePokeCard = ({ pokemon, qty }: PokeCardProps) => {
 };
 
 export const PokeArticle = ({
-  id,
   value,
+  promise,
 }: {
   id: string | number;
   value: number;
+  promise: Promise<Pokemon | null>;
 }) => {
-  const { data, error } = usePokemon(id);
+  const pokemon = use(promise);
 
-  if (error) return <div>Error</div>;
+  if (!pokemon) return null;
 
-  if (!data) return null;
-
-  return <SimplePokeCard pokemon={data} qty={value} />;
+  return <SimplePokeCard pokemon={pokemon} qty={value} />;
 };

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import NextImage from "next/image";
 import Link from "next/link";
 
+import { ArchitectureDiagram } from "../components/ArchitectureDiagram";
 import { Notice } from "../components/Notice";
 import { VisuallyHidden } from "../components/VisuallyHidden";
 import { SUPPORTED_POKEMON } from "../lib/constants";
@@ -87,7 +87,9 @@ export default function Home() {
 
         <p>Poké Adventure was made to be used as a Next.js demonstration.</p>
 
-        <p>The application uses 6 routes, 4 pages and 2 API routes.</p>
+        <p>
+          The application uses, 4 Pages, 1 Route Handler, and a Server Function
+        </p>
 
         <h3>Pages</h3>
         <ul className="nes-list is-circle">
@@ -105,9 +107,13 @@ export default function Home() {
           </li>
         </ul>
 
-        <h3>API</h3>
+        <h3>Route Handlers</h3>
         <ul className="nes-list is-circle">
           <li>Wild Pokémon fetch</li>
+        </ul>
+
+        <h3>Server Function</h3>
+        <ul className="nes-list is-circle">
           <li>Poké Capture decider</li>
         </ul>
       </section>
@@ -122,14 +128,17 @@ export default function Home() {
           </a>{" "}
           <span aria-hidden>Architecture</span>
         </h2>
+
         <h3>At Build time</h3>
         <p>
           At build time the landing page, the capture page, and 3 Pokémon views
           are generated.
         </p>
+
         <h3>On Demand</h3>
         <p>
-          The API routes are lambdas, and are generated at runtime, by default.
+          The Route Handler and Server Function run at request time, served as
+          serverless functions by default.
         </p>
         <p>
           The Pokémon collection page, and additional Pokémon views are
@@ -137,7 +146,6 @@ export default function Home() {
         </p>
 
         <h3>Tech Stack</h3>
-
         <p>
           Next.js application, built with{" "}
           <code className="nes-text is-primary">next build</code> and activated
@@ -158,13 +166,7 @@ export default function Home() {
 
         <figure className="nes-container with-title">
           <figcaption className="title">Application Data Flow</figcaption>
-          <NextImage
-            src="/architecture.png"
-            width="1148"
-            height="851"
-            alt="Project architecture - data flow"
-            style={{ width: "100%", height: "auto" }}
-          />
+          <ArchitectureDiagram />
         </figure>
       </section>
     </>
