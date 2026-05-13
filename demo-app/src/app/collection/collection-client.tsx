@@ -8,7 +8,7 @@ import type { Pokemon } from "types";
 
 import { ButtonGroup } from "../../components/ButtonGroup";
 import { CollectionGrid } from "../../components/CollectionGrid";
-import { PokeArticle } from "../../components/PokeArticle";
+import { PokeArticle, PokeArticleSkeleton } from "../../components/PokeArticle";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -70,7 +70,9 @@ export function CollectionClient({ collection }: CollectionProps) {
             .slice(page * ITEMS_PER_PAGE, (page + 1) * ITEMS_PER_PAGE)
             .map(([id, value, promise]) => (
               <article key={id}>
-                <Suspense fallback={"Loading..."}>
+                <Suspense
+                  fallback={<PokeArticleSkeleton id={id} value={value} />}
+                >
                   <PokeArticle id={id} value={value} promise={promise} />
                 </Suspense>
               </article>
