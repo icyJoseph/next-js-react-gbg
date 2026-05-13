@@ -11,9 +11,19 @@ import type { Pokemon } from "types";
 const StyledDialog = styled(Dialog)`
   border-color: rgba(0, 0, 0);
   border-style: solid;
+  box-sizing: border-box;
+  width: min(95vw, 28rem);
+
+  h1 {
+    font-size: clamp(1rem, 6vw, 2rem);
+    margin: 0 0 1rem;
+    word-break: break-word;
+  }
 
   img {
     image-rendering: pixelated;
+    max-width: 100%;
+    height: auto;
   }
 `;
 

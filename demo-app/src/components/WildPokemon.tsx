@@ -30,6 +30,21 @@ const PokeWrapper = styled(motion.div)`
   height: 240px;
 `;
 
+const Hint = styled.p<{ $hidden: boolean }>`
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  color: #6c757d;
+  font-size: 0.75rem;
+  opacity: ${({ $hidden }) => ($hidden ? 0 : 1)};
+  transition: opacity 0.3s ease;
+`;
+
 const pokemonInitial = { x: "110vw", y: "calc(10vh - 3rem)" };
 const pokemonReady = {
   x: "calc(80vw - 240px - 16px)",
@@ -122,6 +137,8 @@ export function Capture({ PokeBall }: WildPokemonProps) {
       <WildPokemon pokemon={pokemon} pending={pending} ref={containerRef} />
 
       <PokeBall target={containerRef} pending={pending} />
+
+      <Hint $hidden={pending || !pokemon}>Tap the Pokéball to throw!</Hint>
     </form>
   );
 }
