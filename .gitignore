@@ -45,3 +45,9 @@ dist
 
 # next bundle analyzer output
 analyze
+
+# playwright
+/demo-app/test-results/
+/demo-app/playwright-report/
+/demo-app/blob-report/
+/demo-app/playwright/.cache/
