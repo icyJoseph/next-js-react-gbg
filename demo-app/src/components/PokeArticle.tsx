@@ -15,7 +15,7 @@ const SimplePokeCard = ({ pokemon, qty }: PokeCardProps) => {
   return (
     <section className={`${cn} ${!!caught ? "is-dark" : ""}`}>
       <header className="title">
-        <h1 className="capitalize">{pokemon.name}</h1>
+        <h3 className="capitalize">{pokemon.name}</h3>
 
         <Link href={`/pokemon/${pokemon.id}`}>
           <span className="nes-text is-primary">#{pokemon.id}</span>
