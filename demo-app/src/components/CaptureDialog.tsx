@@ -1,7 +1,7 @@
 import "@reach/dialog/styles.css";
 
 import Dialog from "@reach/dialog";
-import NextLegacyImage from "next/legacy/image";
+import NextImage from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -39,10 +39,10 @@ export const CaptureDialog = ({
       </p>
 
       {captured && (
-        <NextLegacyImage
+        <NextImage
           src={captured.sprites.frontDefault}
-          width="180"
-          height="180"
+          width={180}
+          height={180}
           alt={captured.name}
         />
       )}
