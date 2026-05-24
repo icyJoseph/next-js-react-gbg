@@ -54,7 +54,9 @@ export default function Home() {
             <p className="nes-text is-primary">
               This site uses a Cookie to save your collection.
             </p>
-            <p className="nes-text is-error">Terrible and lazy decision!</p>
+            <p className="nes-text is-error">
+              We just didn&apos;t want to bother with a database!
+            </p>
 
             <p className="nes-text is-error">This site does not track you.</p>
           </div>
@@ -71,7 +73,7 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            in this repository.
+            in this repository
           </a>
           .
         </p>
@@ -94,27 +96,37 @@ export default function Home() {
         <h3>Pages</h3>
         <ul className="nes-list is-circle">
           <li>
-            <Link href="/">Landing Page</Link>
+            <Link href="/">Landing Page</Link>: this page, overview and
+            documentation
           </li>
           <li>
-            <Link href="/pokemon/4">Pokémon view</Link>
+            <Link href="/pokemon/4">Pokémon view</Link>: displays stats and
+            details for a single Pokémon
           </li>
           <li>
-            <Link href="/pokemon/capture">Pokémon Capture</Link>
+            <Link href="/pokemon/capture">Pokémon Capture</Link>: encounter
+            wild Pokémon and attempt to catch them
           </li>
           <li>
-            <Link href="/collection">Personal Collection</Link>
+            <Link href="/collection">Personal Collection</Link>: view all
+            Pokémon you have seen and caught
           </li>
         </ul>
 
         <h3>Route Handlers</h3>
         <ul className="nes-list is-circle">
-          <li>Wild Pokémon fetch</li>
+          <li>
+            Wild Pokémon fetch: returns a random Pokémon for the capture
+            encounter
+          </li>
         </ul>
 
         <h3>Server Function</h3>
         <ul className="nes-list is-circle">
-          <li>Poké Capture decider</li>
+          <li>
+            Poké Capture decider: determines whether a capture attempt succeeds
+            based on the Pokémon&apos;s capture rate
+          </li>
         </ul>
       </section>
 
@@ -130,20 +142,66 @@ export default function Home() {
         </h2>
 
         <h3>At Build time</h3>
-        <p>
-          At build time the landing page, the capture page, and 3 Pokémon views
-          are generated.
-        </p>
+        <p>The following routes are statically generated:</p>
+        <ul className="nes-list is-circle">
+          <li>
+            Landing page:{" "}
+            <Link href="/">
+              <code className="nes-text is-primary">/</code>
+            </Link>
+          </li>
+          <li>
+            Capture page:{" "}
+            <Link href="/pokemon/capture">
+              <code className="nes-text is-primary">/pokemon/capture</code>
+            </Link>
+          </li>
+          <li>
+            Bulbasaur:{" "}
+            <Link href="/pokemon/1">
+              <code className="nes-text is-primary">/pokemon/1</code>
+            </Link>
+          </li>
+          <li>
+            Charmander:{" "}
+            <Link href="/pokemon/4">
+              <code className="nes-text is-primary">/pokemon/4</code>
+            </Link>
+          </li>
+          <li>
+            Squirtle:{" "}
+            <Link href="/pokemon/7">
+              <code className="nes-text is-primary">/pokemon/7</code>
+            </Link>
+          </li>
+        </ul>
 
         <h3>On Demand</h3>
+        <p>The following pages are generated on demand:</p>
+        <ul className="nes-list is-circle">
+          <li>
+            Personal collection:{" "}
+            <Link href="/collection">
+              <code className="nes-text is-primary">/collection</code>
+            </Link>
+          </li>
+          <li>
+            Any Pokémon view not generated at build time:{" "}
+            <code className="nes-text is-primary">/pokemon/[id]</code>
+          </li>
+        </ul>
         <p>
-          The Route Handler and Server Function run at request time, served as
-          serverless functions by default.
+          Additionally, the following are served as serverless functions:
         </p>
-        <p>
-          The Pokémon collection page, and additional Pokémon views are
-          generated on demand.
-        </p>
+        <ul className="nes-list is-circle">
+          <li>
+            Wild Pokémon Route Handler:{" "}
+            <code className="nes-text is-primary">/api/wild</code>
+          </li>
+          <li>
+            Poké Capture Server Function
+          </li>
+        </ul>
 
         <h3>Tech Stack</h3>
         <p>
