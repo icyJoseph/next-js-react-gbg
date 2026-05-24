@@ -1,25 +1,48 @@
-import { useEffect, forwardRef } from "react";
+"use client";
+
+import {
+  type ComponentType,
+  type RefObject,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { motion, useAnimation } from "framer-motion";
 import styled from "styled-components";
-import { assert } from "superstruct";
 
+import { capturePokemonAction } from "app/actions/capture";
+import { CaptureDialog } from "components/CaptureDialog";
 import { useWildPokemon } from "hooks/useWildPokemon";
 import { sleep } from "lib/sleep";
-import { Catch, Pokemon, Status } from "types";
+import type { Pokemon } from "types";
 
-type StatusProps = { status: Status };
-
-type PokeCallbacks = {
-  onFailure: () => void;
-  onCapture: (pk: Pokemon) => void;
-};
-
-const StyledDiv = styled(motion.img)`
+const PokeImg = styled.img`
   width: 240px;
   height: 240px;
-  position: absolute;
   image-rendering: pixelated;
+`;
+
+const PokeWrapper = styled(motion.div)`
+  position: absolute;
+  width: 240px;
+  height: 240px;
+`;
+
+const Hint = styled.p<{ $hidden: boolean }>`
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  color: #6c757d;
+  font-size: 0.75rem;
+  opacity: ${({ $hidden }) => ($hidden ? 0 : 1)};
+  transition: opacity 0.3s ease;
 `;
 
 const pokemonInitial = { x: "110vw", y: "calc(10vh - 3rem)" };
@@ -29,71 +52,93 @@ const pokemonReady = {
   opacity: 1,
 };
 
-type WildPokemonProps = StatusProps & PokeCallbacks;
+type WildPokemonProps = {
+  PokeBall: ComponentType<{
+    pending: boolean;
+    target: RefObject<HTMLDivElement | null>;
+  }>;
+};
 
-export const WildPokemon = forwardRef<HTMLImageElement, WildPokemonProps>(
-  function Pokemon({ status, onCapture, onFailure }, ref) {
-    const control = useAnimation();
-    const pokemon = useWildPokemon();
+async function captureWithDelay(
+  ...params: Parameters<typeof capturePokemonAction>
+) {
+  const result = await capturePokemonAction(...params);
+  await sleep(1250 * 4);
+  return result.success;
+}
 
-    useEffect(() => {
-      if (status !== "trying") return;
+function WildPokemon({
+  pokemon,
+  pending,
+  ref,
+}: {
+  pokemon: Pokemon | null;
+  pending: boolean;
+  ref: RefObject<HTMLDivElement | null>;
+}) {
+  const control = useAnimation();
 
-      control.set({ opacity: 0 });
-    }, [control, status]);
+  useEffect(() => {
+    if (!pokemon) return;
 
-    useEffect(() => {
-      if (!pokemon) return;
-
-      if (status !== "pending") return;
-
+    const raf = requestAnimationFrame(() => {
       control.start(pokemonReady);
-    }, [control, status, pokemon]);
+    });
 
-    useEffect(() => {
-      if (!pokemon) return;
-      if (status !== "trying") return;
+    return () => {
+      cancelAnimationFrame(raf);
+      control.stop();
+    };
+  }, [pokemon, control]);
 
-      const controller = new AbortController();
+  useEffect(() => {
+    control.start({ opacity: pending ? 0 : 1 });
+  }, [pending, control]);
 
-      fetch("/api/capture", {
-        method: "POST",
-        body: JSON.stringify({ id: pokemon.id }),
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-      })
-        .then(async (res) => {
-          if (res.status !== 200) return onFailure();
+  const imgSrc = pokemon?.sprites.frontDefault;
 
-          await sleep(1250 * 4);
+  return (
+    <PokeWrapper ref={ref} initial={pokemonInitial} animate={control}>
+      <PokeImg src={imgSrc} alt={pokemon?.name} width="96" height="96" />
+    </PokeWrapper>
+  );
+}
 
-          const data = await res.json();
+export function Capture({ PokeBall }: WildPokemonProps) {
+  const [pokemon, reset] = useWildPokemon();
 
-          assert(data, Catch);
+  const [captured, formAction, pending] = useActionState(
+    captureWithDelay,
+    false
+  );
 
-          return data.success ? onCapture(pokemon) : onFailure();
-        })
-        .catch(() => onFailure());
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-      return () => {
-        controller.abort();
-      };
-    }, [status, pokemon, onCapture, onFailure]);
+  const [showDialog, setShowDialog] = useState(false);
 
-    if (pokemon === null) return null;
+  useEffect(() => {
+    if (captured === true) setShowDialog(true);
+  }, [captured]);
 
-    const src = pokemon.sprites.frontDefault;
-
+  if (showDialog) {
     return (
-      <StyledDiv
-        src={src}
-        alt={pokemon.name}
-        ref={ref}
-        initial={pokemonInitial}
-        animate={control}
-        width="96"
-        height="96"
+      <CaptureDialog
+        captured={pokemon}
+        onDismiss={() => {
+          setShowDialog(false);
+          reset();
+        }}
       />
     );
   }
-);
+
+  return (
+    <form action={formAction.bind(null, pokemon?.id ?? "")}>
+      <WildPokemon pokemon={pokemon} pending={pending} ref={containerRef} />
+
+      <PokeBall target={containerRef} pending={pending} />
+
+      <Hint $hidden={pending || !pokemon}>Tap the Pokéball to throw!</Hint>
+    </form>
+  );
+}

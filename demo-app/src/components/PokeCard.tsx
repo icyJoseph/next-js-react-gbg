@@ -1,3 +1,5 @@
+"use client";
+
 import NextImage from "next/image";
 import styled from "styled-components";
 

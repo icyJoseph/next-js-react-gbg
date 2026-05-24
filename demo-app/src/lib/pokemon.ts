@@ -25,8 +25,10 @@ export const fetchPokemon = async (id: number | string) => {
     fetch(`${pokeEp}/${id}`),
   ]);
 
-  const specieData = await specie.json();
-  const pokeData = await poke.json();
+  const [specieData, pokeData] = await Promise.all([
+    specie.json(),
+    poke.json(),
+  ]);
 
   const data = {
     id: pokeData?.id,
@@ -41,7 +43,11 @@ export const fetchPokemon = async (id: number | string) => {
     description: specieData?.flavor_text_entries?.[0]?.flavor_text,
   };
 
-  assert(data, Pokemon);
+  try {
+    assert(data, Pokemon);
+  } catch {
+    return null;
+  }
 
   return data;
 };

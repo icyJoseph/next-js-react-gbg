@@ -1,14 +1,13 @@
 import { expect, test } from "@playwright/test";
 
-import { fulfillJson, mockBulbasaur } from "./helpers/fixtures";
+import { fulfillJson, mockBulbasaur, mockFailMon } from "./helpers/fixtures";
 
 test.describe("capture flow", () => {
   test("successful capture shows the dialog", async ({ page }) => {
+    // /api/wild controls the encounter; id=1 maps to capture_rate=256 in
+    // the fixture PokéAPI, so the server-side roll is always success.
     await page.route("**/api/wild", (route) =>
       fulfillJson(route, mockBulbasaur)
-    );
-    await page.route("**/api/capture", (route) =>
-      fulfillJson(route, { id: mockBulbasaur.id, success: true })
     );
 
     await page.goto("/pokemon/capture");
@@ -30,25 +29,22 @@ test.describe("capture flow", () => {
   test("failed capture returns user to the catching scene", async ({
     page,
   }) => {
+    // id=2 maps to capture_rate=0 → always fails.
     await page.route("**/api/wild", (route) =>
-      fulfillJson(route, mockBulbasaur)
-    );
-    await page.route("**/api/capture", (route) =>
-      fulfillJson(route, { id: mockBulbasaur.id, success: false })
+      fulfillJson(route, mockFailMon)
     );
 
     await page.goto("/pokemon/capture");
-    await expect(page.getByAltText(mockBulbasaur.name)).toBeVisible();
+    await expect(page.getByAltText(mockFailMon.name)).toBeVisible();
 
     await page.getByRole("button").first().click();
 
-    // give the animation + the simulated 5s wait time to finish
+    // Wait long enough for the throw animation + 5s pending delay.
     await expect(
       page.getByRole("heading", { level: 1, name: "Nice!" })
     ).toBeHidden({ timeout: 15_000 });
 
-    // pokemon should still be on screen since capture failed
-    await expect(page.getByAltText(mockBulbasaur.name)).toBeVisible();
+    await expect(page.getByAltText(mockFailMon.name)).toBeVisible();
   });
 
   test("dismiss button on success dialog returns to the scene", async ({
@@ -56,9 +52,6 @@ test.describe("capture flow", () => {
   }) => {
     await page.route("**/api/wild", (route) =>
       fulfillJson(route, mockBulbasaur)
-    );
-    await page.route("**/api/capture", (route) =>
-      fulfillJson(route, { id: mockBulbasaur.id, success: true })
     );
 
     await page.goto("/pokemon/capture");
